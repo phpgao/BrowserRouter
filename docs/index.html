@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrowserRouter — Smart URL Routing for macOS</title>
+  <meta name="description" content="A lightweight macOS app that routes URLs to different browsers based on rules you define.">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            surface: '#1a1a2e',
+            'surface-2': '#16213e',
+            'surface-3': '#0f3460',
+            accent: '#e94560',
+            'accent-light': '#ff6b81',
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
+            mono: ['SF Mono', 'Fira Code', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background: #0a0a1a; }
+    .glass {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .glass-hover:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.15);
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #e94560, #ff6b81, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(233,69,96,0.15) 0%, transparent 70%);
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .flow-arrow {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    .pattern-row:hover { background: rgba(233,69,96,0.08); }
+    code {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.875em;
+    }
+    /* language toggle */
+    [data-lang="zh"] { display: none; }
+    .lang-zh [data-lang="en"] { display: none; }
+    .lang-zh [data-lang="zh"] { display: revert; }
+  </style>
+</head>
+<body class="text-gray-200 min-h-screen overflow-x-hidden">
+
+<!-- Language Toggle (floating) -->
+<button id="langToggle" onclick="toggleLang()"
+  class="fixed top-4 right-4 z-50 glass glass-hover rounded-full px-4 py-2 text-sm font-medium transition-all cursor-pointer hover:scale-105 active:scale-95">
+  <span data-lang="en">中文</span>
+  <span data-lang="zh">EN</span>
+</button>
+
+<!-- ===== HERO ===== -->
+<section class="relative pt-28 pb-20 px-6 text-center overflow-hidden">
+  <div class="hero-glow"></div>
+  <div class="relative max-w-4xl mx-auto">
+    <!-- App Icon (CSS replica of the actual app icon) -->
+    <div class="mb-8 inline-flex items-center justify-center w-24 h-24 rounded-[22px] shadow-2xl shadow-blue-500/20 relative overflow-hidden" style="background: linear-gradient(145deg, #2a2d3a 0%, #1a1d28 100%);">
+      <div class="absolute left-[18px] top-[18px] bottom-[18px] w-[3px] rounded-full" style="background: #4a9eff;"></div>
+      <span class="text-white font-bold text-[36px] tracking-tight" style="font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;">BR</span>
+      <div class="absolute bottom-[16px] left-1/2 -translate-x-1/2 w-[6px] h-[6px] rounded-full" style="background: #4a9eff;"></div>
+    </div>
+
+    <h1 class="text-5xl sm:text-7xl font-bold tracking-tight mb-6">
+      <span class="gradient-text">BrowserRouter</span>
+    </h1>
+
+    <p data-lang="en" class="text-xl sm:text-2xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+      A lightweight macOS app that routes URLs to different browsers<br class="hidden sm:block"> based on rules you define.
+    </p>
+    <p data-lang="zh" class="text-xl sm:text-2xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+      一款轻量级 macOS 应用，根据你定义的规则<br class="hidden sm:block">将 URL 路由到不同的浏览器。
+    </p>
+
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="https://github.com/phpgao/BrowserRouter/releases" target="_blank"
+        class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-white font-semibold px-8 py-3.5 rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg shadow-accent/25">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
+        <span data-lang="en">Download</span>
+        <span data-lang="zh">下载</span>
+      </a>
+      <a href="https://github.com/phpgao/BrowserRouter" target="_blank"
+        class="inline-flex items-center gap-2 glass glass-hover font-semibold px-8 py-3.5 rounded-xl transition-all hover:scale-105 active:scale-95">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section class="py-20 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4">
+      <span data-lang="en">Features</span>
+      <span data-lang="zh">功能特性</span>
+    </h2>
+    <p class="text-gray-500 text-center mb-14 max-w-xl mx-auto">
+      <span data-lang="en">Everything you need to manage how links open on your Mac.</span>
+      <span data-lang="zh">管理 Mac 上链接打开方式的一切所需。</span>
+    </p>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <!-- Feature Cards -->
+      <div class="glass glass-hover rounded-2xl p-6 transition-all">
+        <div class="text-3xl mb-3">🎯</div>
+        <h3 class="font-semibold text-lg mb-2">
+          <span data-lang="en">Rule-based Routing</span>
+          <span data-lang="zh">规则路由</span>
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          <span data-lang="en">Define wildcard patterns to match URLs and assign them to specific browsers.</span>
+          <span data-lang="zh">定义通配符模式匹配 URL，指定对应的浏览器。</span>
+        </p>
+      </div>
+
+      <div class="glass glass-hover rounded-2xl p-6 transition-all">
+        <div class="text-3xl mb-3">🪟</div>
+        <h3 class="font-semibold text-lg mb-2">
+          <span data-lang="en">Dock-style Picker</span>
+          <span data-lang="zh">Dock 风格选择器</span>
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          <span data-lang="en">When no rule matches, a frosted-glass floating picker appears at your cursor.</span>
+          <span data-lang="zh">无匹配规则时，在光标位置弹出毛玻璃浮窗供你选择。</span>
+        </p>
+      </div>
+
+      <div class="glass glass-hover rounded-2xl p-6 transition-all">
+        <div class="text-3xl mb-3">🔮</div>
+        <h3 class="font-semibold text-lg mb-2">
+          <span data-lang="en">Wildcard Patterns</span>
+          <span data-lang="zh">通配符模式</span>
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          <span data-lang="en"><code>*</code> matches a single level, <code>**</code> matches multiple levels including paths and subdomains.</span>
+          <span data-lang="zh"><code>*</code> 匹配单级域名，<code>**</code> 匹配多级域名、路径和子路径。</span>
+        </p>
+      </div>
+
+      <div class="glass glass-hover rounded-2xl p-6 transition-all">
+        <div class="text-3xl mb-3">🕶️</div>
+        <h3 class="font-semibold text-lg mb-2">
+          <span data-lang="en">Incognito Mode</span>
+          <span data-lang="zh">隐身模式</span>
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          <span data-lang="en">Hover over a browser icon to switch to private/incognito mode. Supports Chrome, Edge, Firefox, Brave, Vivaldi, Opera, Yandex, Tor Browser.</span>
+          <span data-lang="zh">悬停浏览器图标切换隐身模式，支持 Chrome、Edge、Firefox、Brave、Vivaldi、Opera、Yandex、Tor Browser。</span>
+        </p>
+      </div>
+
+      <div class="glass glass-hover rounded-2xl p-6 transition-all">
+        <div class="text-3xl mb-3">⌘</div>
+        <h3 class="font-semibold text-lg mb-2">
+          <span data-lang="en">⌘-Click Override</span>
+          <span data-lang="zh">⌘ 点击强制选择</span>
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          <span data-lang="en">Hold ⌘ when clicking any link to force the browser picker, bypassing all rules.</span>
+          <span data-lang="zh">按住 ⌘ 键点击链接，跳过所有规则，强制弹出浏览器选择器。</span>
+        </p>
+      </div>
+
+      <div class="glass glass-hover rounded-2xl p-6 transition-all">
+        <div class="text-3xl mb-3">📊</div>
+        <h3 class="font-semibold text-lg mb-2">
+          <span data-lang="en">Click Statistics</span>
+          <span data-lang="zh">点击统计</span>
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          <span data-lang="en">Track how often each browser is used with built-in analytics.</span>
+          <span data-lang="zh">内置分析功能，记录每个浏览器的使用次数。</span>
+        </p>
+      </div>
+
+      <div class="glass glass-hover rounded-2xl p-6 transition-all">
+        <div class="text-3xl mb-3">🧪</div>
+        <h3 class="font-semibold text-lg mb-2">
+          <span data-lang="en">URL Test Tool</span>
+          <span data-lang="zh">URL 测试工具</span>
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          <span data-lang="en">Test URLs against your rules to verify matching behavior before going live.</span>
+          <span data-lang="zh">在规则页面输入 URL 测试匹配结果，验证规则是否生效。</span>
+        </p>
+      </div>
+
+      <div class="glass glass-hover rounded-2xl p-6 transition-all">
+        <div class="text-3xl mb-3">🌍</div>
+        <h3 class="font-semibold text-lg mb-2">
+          <span data-lang="en">Multi-language</span>
+          <span data-lang="zh">多语言</span>
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          <span data-lang="en">English, 简体中文, 繁體中文, 日本語 — can override system language.</span>
+          <span data-lang="zh">支持 English、简体中文、繁體中文、日本語，可独立于系统语言设置。</span>
+        </p>
+      </div>
+
+      <div class="glass glass-hover rounded-2xl p-6 transition-all">
+        <div class="text-3xl mb-3">🚀</div>
+        <h3 class="font-semibold text-lg mb-2">
+          <span data-lang="en">Launch at Login</span>
+          <span data-lang="zh">开机自启</span>
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          <span data-lang="en">Runs silently in the menu bar. Set it and forget it.</span>
+          <span data-lang="zh">静默运行在菜单栏，设置后无需再管。</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="py-20 px-6">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-3xl sm:text-4xl font-bold text-center mb-14">
+      <span data-lang="en">How It Works</span>
+      <span data-lang="zh">工作原理</span>
+    </h2>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+      <!-- Step 1 -->
+      <div class="glass rounded-2xl p-6 text-center flex-1 max-w-xs">
+        <div class="text-4xl mb-3">🔗</div>
+        <h3 class="font-semibold mb-1">
+          <span data-lang="en">Click a Link</span>
+          <span data-lang="zh">点击链接</span>
+        </h3>
+        <p class="text-gray-500 text-sm">
+          <span data-lang="en">Any app sends a URL</span>
+          <span data-lang="zh">任何应用发送 URL</span>
+        </p>
+      </div>
+
+      <div class="text-accent text-2xl flow-arrow hidden sm:block">→</div>
+      <div class="text-accent text-2xl flow-arrow sm:hidden">↓</div>
+
+      <!-- Step 2 -->
+      <div class="glass rounded-2xl p-6 text-center flex-1 max-w-xs">
+        <div class="text-4xl mb-3">⚙️</div>
+        <h3 class="font-semibold mb-1">
+          <span data-lang="en">Match Rules</span>
+          <span data-lang="zh">规则匹配</span>
+        </h3>
+        <p class="text-gray-500 text-sm">
+          <span data-lang="en">First matching rule wins</span>
+          <span data-lang="zh">第一条匹配规则生效</span>
+        </p>
+      </div>
+
+      <div class="text-accent text-2xl flow-arrow hidden sm:block">→</div>
+      <div class="text-accent text-2xl flow-arrow sm:hidden">↓</div>
+
+      <!-- Step 3 -->
+      <div class="glass rounded-2xl p-6 text-center flex-1 max-w-xs">
+        <div class="text-4xl mb-3">🌐</div>
+        <h3 class="font-semibold mb-1">
+          <span data-lang="en">Open in Browser</span>
+          <span data-lang="zh">打开浏览器</span>
+        </h3>
+        <p class="text-gray-500 text-sm">
+          <span data-lang="en">Or show the picker</span>
+          <span data-lang="zh">或弹出选择器</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-10 glass rounded-2xl p-5 max-w-2xl mx-auto">
+      <pre class="text-sm text-gray-400 overflow-x-auto"><code><span class="text-accent">URL intercepted</span> → AppDelegate
+  → <span class="text-purple-400">URLRouter.match(url)</span>    <span class="text-gray-600">// first enabled rule wins</span>
+  → <span class="text-blue-400">BrowserManager.open()</span>   <span class="text-gray-600">// launch the browser</span>
+  → <span class="text-yellow-400">fallback:</span> showPicker | openInBrowser | doNothing</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WILDCARD PATTERNS ===== -->
+<section class="py-20 px-6">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4">
+      <span data-lang="en">Wildcard Patterns</span>
+      <span data-lang="zh">通配符规则参考</span>
+    </h2>
+    <p class="text-gray-500 text-center mb-10 max-w-xl mx-auto">
+      <span data-lang="en"><code class="text-accent">*</code> matches a single level &nbsp;·&nbsp; <code class="text-accent">**</code> matches everything</span>
+      <span data-lang="zh"><code class="text-accent">*</code> 匹配单级 &nbsp;·&nbsp; <code class="text-accent">**</code> 匹配任意字符</span>
+    </p>
+
+    <div class="glass rounded-2xl overflow-hidden">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-white/10 text-left">
+            <th class="px-6 py-4 font-semibold">
+              <span data-lang="en">Pattern</span>
+              <span data-lang="zh">规则</span>
+            </th>
+            <th class="px-6 py-4 font-semibold text-green-400">
+              <span data-lang="en">Matches</span>
+              <span data-lang="zh">匹配 ✓</span>
+            </th>
+            <th class="px-6 py-4 font-semibold text-red-400">
+              <span data-lang="en">Doesn't Match</span>
+              <span data-lang="zh">不匹配 ✗</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-400">
+          <tr class="border-b border-white/5 pattern-row transition-colors">
+            <td class="px-6 py-3"><code class="text-accent">*.foo.com</code></td>
+            <td class="px-6 py-3"><code>bar.foo.com</code></td>
+            <td class="px-6 py-3"><code>a.b.foo.com</code></td>
+          </tr>
+          <tr class="border-b border-white/5 pattern-row transition-colors">
+            <td class="px-6 py-3"><code class="text-accent">**.foo.com</code></td>
+            <td class="px-6 py-3"><code>bar.foo.com</code>, <code>a.b.c.foo.com</code></td>
+            <td class="px-6 py-3">—</td>
+          </tr>
+          <tr class="border-b border-white/5 pattern-row transition-colors">
+            <td class="px-6 py-3"><code class="text-accent">*.foo.com/bar</code></td>
+            <td class="px-6 py-3"><code>x.foo.com/bar</code></td>
+            <td class="px-6 py-3"><code>x.foo.com/bar/baz</code></td>
+          </tr>
+          <tr class="border-b border-white/5 pattern-row transition-colors">
+            <td class="px-6 py-3"><code class="text-accent">*.foo.com/bar**</code></td>
+            <td class="px-6 py-3"><code>x.foo.com/bar</code>, <code>x.foo.com/bar/baz</code></td>
+            <td class="px-6 py-3">—</td>
+          </tr>
+          <tr class="pattern-row transition-colors">
+            <td class="px-6 py-3"><code class="text-accent">*.foo.com/api?id=**</code></td>
+            <td class="px-6 py-3"><code>.../api?id=123</code></td>
+            <td class="px-6 py-3"><code>.../api?x=1</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-6 flex flex-wrap gap-4 justify-center text-sm text-gray-500">
+      <div class="glass rounded-xl px-4 py-2">
+        <span data-lang="en"><code class="text-accent">*</code> — no <code>.</code> or <code>/</code></span>
+        <span data-lang="zh"><code class="text-accent">*</code> — 不含 <code>.</code> 和 <code>/</code></span>
+      </div>
+      <div class="glass rounded-xl px-4 py-2">
+        <span data-lang="en"><code class="text-accent">**</code> — anything including <code>.</code> and <code>/</code></span>
+        <span data-lang="zh"><code class="text-accent">**</code> — 包含 <code>.</code> 和 <code>/</code> 的任意字符</span>
+      </div>
+      <div class="glass rounded-xl px-4 py-2">
+        <span data-lang="en">No <code>?</code> in pattern → query params ignored</span>
+        <span data-lang="zh">规则不含 <code>?</code> 时忽略查询参数</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUPPORTED BROWSERS ===== -->
+<section class="py-20 px-6">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+      <span data-lang="en">Supported Browsers</span>
+      <span data-lang="zh">支持的浏览器</span>
+    </h2>
+    <p class="text-gray-500 mb-10 max-w-xl mx-auto">
+      <span data-lang="en">Works with all major browsers on macOS.</span>
+      <span data-lang="zh">支持 macOS 上所有主流浏览器。</span>
+    </p>
+
+    <div class="flex flex-wrap gap-3 justify-center max-w-3xl mx-auto">
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🧭 Safari</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🔵 Chrome</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🟡 Chrome Canary</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">⚪ Chromium</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🦊 Firefox</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🔷 Edge</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🌈 Arc</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🦁 Brave</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🔴 Opera</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🎮 Opera GX</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🟢 Vivaldi</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🔍 Yandex</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🦆 DuckDuckGo</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🧅 Tor Browser</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🟣 UC Browser</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">⚡ Quark</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🟠 360</span>
+      <span class="glass rounded-xl px-4 py-2.5 text-sm font-medium">🔮 Orion</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="py-12 px-6 border-t border-white/5">
+  <div class="max-w-4xl mx-auto text-center">
+    <div class="flex items-center justify-center gap-2 mb-4">
+      <div class="w-8 h-8 rounded-lg relative overflow-hidden flex items-center justify-center" style="background: linear-gradient(145deg, #2a2d3a 0%, #1a1d28 100%);">
+        <div class="absolute left-[6px] top-[6px] bottom-[6px] w-[1.5px] rounded-full" style="background: #4a9eff;"></div>
+        <span class="text-white font-bold text-[13px] tracking-tight" style="font-family: -apple-system, 'SF Pro Display', sans-serif;">BR</span>
+        <div class="absolute bottom-[5px] left-1/2 -translate-x-1/2 w-[3px] h-[3px] rounded-full" style="background: #4a9eff;"></div>
+      </div>
+      <span class="font-semibold text-lg">BrowserRouter</span>
+    </div>
+    <p class="text-gray-500 text-sm mb-4">
+      <span data-lang="en">Open source under GPLv3 license.</span>
+      <span data-lang="zh">基于 GPLv3 许可证开源。</span>
+    </p>
+    <div class="flex gap-6 justify-center text-sm text-gray-500">
+      <a href="https://github.com/phpgao/BrowserRouter" class="hover:text-accent transition-colors">GitHub</a>
+      <a href="https://github.com/phpgao/BrowserRouter/releases" class="hover:text-accent transition-colors">Releases</a>
+      <a href="https://github.com/phpgao/BrowserRouter/issues" class="hover:text-accent transition-colors">Issues</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== LANGUAGE TOGGLE SCRIPT ===== -->
+<script>
+  function toggleLang() {
+    document.documentElement.classList.toggle('lang-zh');
+    const isZh = document.documentElement.classList.contains('lang-zh');
+    localStorage.setItem('br-lang', isZh ? 'zh' : 'en');
+    document.documentElement.lang = isZh ? 'zh' : 'en';
+  }
+
+  // Restore saved preference or detect system language
+  (function() {
+    const saved = localStorage.getItem('br-lang');
+    if (saved === 'zh' || (!saved && navigator.language.startsWith('zh'))) {
+      document.documentElement.classList.add('lang-zh');
+      document.documentElement.lang = 'zh';
+    }
+  })();
+</script>
+
+</body>
+</html>
