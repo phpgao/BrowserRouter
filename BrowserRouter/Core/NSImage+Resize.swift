@@ -8,7 +8,7 @@
 import AppKit
 
 /// Cache for resized images, keyed by "objectIdentifier-WxH".
-private let resizedImageCache = NSCache<NSString, NSImage>()
+private nonisolated(unsafe) let resizedImageCache = NSCache<NSString, NSImage>()
 
 extension NSImage {
     /// Returns a new image resized to a square of the given point size.

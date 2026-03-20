@@ -15,7 +15,7 @@ private nonisolated(unsafe) let patternRegexCache = NSCache<NSString, NSRegularE
 /// Pure computation — no UI or system dependencies.
 /// All mutation (init, update) happens on the main thread via AppDelegate;
 /// read-only matching is safe from any context.
-nonisolated final class URLRouter {
+final class URLRouter: @unchecked Sendable {
 
     private struct CompiledRule {
         let rule: BrowserRule

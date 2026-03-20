@@ -8,7 +8,6 @@
 import XCTest
 @testable import BrowserRouter
 
-@MainActor
 final class ImportExportTests: XCTestCase {
 
     var store: RuleStore!
@@ -16,8 +15,8 @@ final class ImportExportTests: XCTestCase {
     var exportURL: URL!
     private var defaultsSuiteName: String!
 
-    override func setUp() async throws {
-        try await super.setUp()
+    override func setUp() {
+        super.setUp()
         tempURL = FileManager.default.temporaryDirectory
             .appendingPathComponent("test-rules-\(UUID().uuidString).json")
         exportURL = FileManager.default.temporaryDirectory
@@ -27,13 +26,13 @@ final class ImportExportTests: XCTestCase {
         store = RuleStore(rulesFileURL: tempURL, defaults: defaults)
     }
 
-    override func tearDown() async throws {
+    override func tearDown() {
         try? FileManager.default.removeItem(at: tempURL)
         try? FileManager.default.removeItem(at: exportURL)
         if let name = defaultsSuiteName {
             UserDefaults.standard.removePersistentDomain(forName: name)
         }
-        try await super.tearDown()
+        super.tearDown()
     }
 
     // MARK: - Export / Import Round-Trip

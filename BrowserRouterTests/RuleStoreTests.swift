@@ -8,15 +8,14 @@
 import XCTest
 @testable import BrowserRouter
 
-@MainActor
 final class RuleStoreTests: XCTestCase {
 
     var store: RuleStore!
     var tempURL: URL!
     private var defaultsSuiteName: String!
 
-    override func setUp() async throws {
-        try await super.setUp()
+    override func setUp() {
+        super.setUp()
         tempURL = FileManager.default.temporaryDirectory
             .appendingPathComponent("test-rules-\(UUID().uuidString).json")
         defaultsSuiteName = "com.jimmy.BrowserRouterTests.\(UUID().uuidString)"
@@ -24,12 +23,12 @@ final class RuleStoreTests: XCTestCase {
         store = RuleStore(rulesFileURL: tempURL, defaults: defaults)
     }
 
-    override func tearDown() async throws {
+    override func tearDown() {
         try? FileManager.default.removeItem(at: tempURL)
         if let name = defaultsSuiteName {
             UserDefaults.standard.removePersistentDomain(forName: name)
         }
-        try await super.tearDown()
+        super.tearDown()
     }
 
     func test_saveAndLoad_rulesRoundTrip() throws {

@@ -21,6 +21,7 @@ private class ClickThroughHostingView<Content: View>: NSHostingView<Content> {
 }
 
 /// Transparent floating browser picker that appears at cursor position.
+@MainActor
 final class FloatingPickerWindow {
 
     private var panel: NSPanel?

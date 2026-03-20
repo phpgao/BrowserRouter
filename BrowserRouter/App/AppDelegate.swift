@@ -9,6 +9,7 @@ import AppKit
 import SwiftUI
 import ServiceManagement
 
+@MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
     var statusBarController: StatusBarController!

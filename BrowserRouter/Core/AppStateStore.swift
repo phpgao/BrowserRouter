@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 
 /// Observable bridge between SwiftUI and the persistence layer.
+@MainActor
 final class AppStateStore: ObservableObject {
     @Published var rules: [BrowserRule] = []
     @Published var settings: AppSettings = AppSettings()

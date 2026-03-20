@@ -7,6 +7,7 @@
 
 import AppKit
 
+@MainActor
 final class StatusBarController: NSObject, NSMenuDelegate {
 
     private var statusItem: NSStatusItem!

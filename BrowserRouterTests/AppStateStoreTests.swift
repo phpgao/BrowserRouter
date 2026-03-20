@@ -19,7 +19,6 @@ final class AppStateStoreTests: XCTestCase {
     private var defaultsSuiteName: String!
 
     override func setUp() async throws {
-        try await super.setUp()
         tempURL = FileManager.default.temporaryDirectory
             .appendingPathComponent("test-appstate-\(UUID().uuidString).json")
         exportURL = FileManager.default.temporaryDirectory
@@ -37,7 +36,6 @@ final class AppStateStoreTests: XCTestCase {
         if let name = defaultsSuiteName {
             UserDefaults.standard.removePersistentDomain(forName: name)
         }
-        try await super.tearDown()
     }
 
     // MARK: - Add Rules

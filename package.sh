@@ -8,7 +8,10 @@ OUTPUT_DIR="$(pwd)/dist"
 
 echo "🔨 Building ${SCHEME} (Release)..."
 xcodebuild -scheme "$SCHEME" -configuration Release \
+    -destination 'generic/platform=macOS' \
     -derivedDataPath "$DERIVED_DATA" \
+    ARCHS="arm64 x86_64" \
+    ONLY_ACTIVE_ARCH=NO \
     build 2>&1 | tail -5
 
 # Check build result

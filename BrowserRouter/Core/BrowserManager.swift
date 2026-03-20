@@ -8,10 +8,11 @@
 import AppKit
 
 /// Detects installed browsers and launches URLs in a specific browser.
+@MainActor
 final class BrowserManager {
 
     // Known mainstream browser bundle IDs and their display names
-    private static let knownBrowsers: [(id: String, name: String)] = [
+    private nonisolated static let knownBrowsers: [(id: String, name: String)] = [
         ("com.apple.Safari",            "Safari"),
         ("com.google.Chrome",           "Google Chrome"),
         ("com.google.Chrome.canary",    "Google Chrome Canary"),
@@ -34,13 +35,13 @@ final class BrowserManager {
     ]
 
     /// All known browser bundle IDs for filtering app notifications.
-    static let knownBrowserIds: Set<String> = Set(knownBrowsers.map { $0.id })
+    nonisolated static let knownBrowserIds: Set<String> = Set(knownBrowsers.map { $0.id })
 
     /// All installed browsers detected on this machine.
     private(set) var installedBrowsers: [Browser] = []
 
     /// Monitors /Applications for changes to auto-refresh browser list.
-    private var applicationsMonitor: DispatchSourceFileSystemObject?
+    private nonisolated(unsafe) var applicationsMonitor: DispatchSourceFileSystemObject?
     private nonisolated(unsafe) var observers: [NSObjectProtocol] = []
 
     init() {
