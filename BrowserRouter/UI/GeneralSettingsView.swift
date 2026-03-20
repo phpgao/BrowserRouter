@@ -29,6 +29,11 @@ struct GeneralSettingsView: View {
                         store.saveSettings()
                     }
 
+                Toggle("Automatically Check for Updates", isOn: $store.settings.autoCheckUpdates)
+                    .onChange(of: store.settings.autoCheckUpdates) { _ in
+                        store.saveSettings()
+                    }
+
                 LabeledContent("Default Browser") {
                     HStack {
                         Button("Set as Default") {

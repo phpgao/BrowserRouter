@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Sparkle
 
 @MainActor
 final class StatusBarController: NSObject, NSMenuDelegate {
@@ -14,17 +15,25 @@ final class StatusBarController: NSObject, NSMenuDelegate {
     private let browserManager: BrowserManager
     private var settings: AppSettings
     private let onSettingsChanged: (AppSettings) -> Void
+    let updaterController: SPUStandardUpdaterController
 
     init(browserManager: BrowserManager, settings: AppSettings, onSettingsChanged: @escaping (AppSettings) -> Void) {
         self.browserManager = browserManager
         self.settings = settings
         self.onSettingsChanged = onSettingsChanged
+        self.updaterController = SPUStandardUpdaterController(
+            startingUpdater: true,
+            updaterDelegate: nil,
+            userDriverDelegate: nil
+        )
         super.init()
+        updaterController.updater.automaticallyChecksForUpdates = settings.autoCheckUpdates
         setupStatusItem()
     }
 
     func update(settings: AppSettings) {
         self.settings = settings
+        updaterController.updater.automaticallyChecksForUpdates = settings.autoCheckUpdates
         rebuildMenu()
     }
 
@@ -71,6 +80,11 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         menu.addItem(loginItem)
 
         menu.addItem(.separator())
+
+        // Check for Updates
+        let updateItem = NSMenuItem(title: NSLocalizedString("Check for Updates…", comment: ""), action: #selector(SPUStandardUpdaterController.checkForUpdates(_:)), keyEquivalent: "")
+        updateItem.target = updaterController
+        menu.addItem(updateItem)
 
         // About
         let aboutItem = NSMenuItem(title: NSLocalizedString("About", comment: ""), action: #selector(showAbout), keyEquivalent: "")

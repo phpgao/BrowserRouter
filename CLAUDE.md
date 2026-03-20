@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-BrowserRouter is a macOS app (SwiftUI, minimum macOS 13, Swift 6 language mode) that acts as the system default browser and routes URLs to different browsers based on user-defined wildcard pattern rules. Zero external dependencies — pure native implementation.
+BrowserRouter is a macOS app (SwiftUI, minimum macOS 13, Swift 6 language mode) that acts as the system default browser and routes URLs to different browsers based on user-defined wildcard pattern rules. Uses Sparkle 2.x for auto-updates; no other external dependencies.
 
 ## Build & Test Commands
 
@@ -84,3 +84,29 @@ After completing any feature changes, always follow this order:
 - Rules: `~/Library/Application Support/BrowserRouter/rules.json`
 - Settings: `UserDefaults(suiteName: "BrowserRouterAppSettings")`
 - Click stats: `UserDefaults(suiteName: "BrowserRouterClickStats")`
+
+## Release Workflow
+
+1. Update version in Xcode project (Marketing Version + Build Number)
+2. Commit, tag, and push:
+   ```bash
+   git tag v1.x.x && git push origin v1.x.x
+   ```
+3. GitHub Actions will automatically:
+   - Build universal binary
+   - Sign with Sparkle EdDSA key
+   - Update appcast.xml
+   - Create GitHub Release with SHA256 in body
+4. Or manually:
+   ```bash
+   ./package.sh
+   # Use Sparkle's sign_update to sign, then update appcast.xml
+   # Create GitHub release
+   ```
+
+## Update Mechanism
+
+Uses Sparkle 2.x framework. Update feed (appcast.xml) hosted in the repo,
+served via raw.githubusercontent.com. Updates are verified with EdDSA (Ed25519)
+signatures. The Sparkle private key is stored as a GitHub Secret
+(SPARKLE_PRIVATE_KEY) for CI and in the local Keychain for manual releases.

@@ -14,6 +14,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>SUFeedURL</key>
+	<string>https://raw.githubusercontent.com/phpgao/BrowserRouter/main/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>j0w9pmbDZSvsF8FIlnMbRZJwXaZ/yRVgw5z8ncZyBEQ=</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

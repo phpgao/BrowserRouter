@@ -1,0 +1,60 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build universal binary
+        run: ./package.sh
+
+      - name: Sign update with Sparkle
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          # Find sign_update in DerivedData (built during package.sh)
+          SIGN_UPDATE="$(find ~/Library/Developer/Xcode/DerivedData -path '*/SourcePackages/artifacts/sparkle/Sparkle/bin/sign_update' -print -quit 2>/dev/null)"
+          if [ -z "$SIGN_UPDATE" ]; then
+            echo "::error::sign_update not found. Ensure Sparkle SPM package is resolved."
+            exit 1
+          fi
+          echo "$SPARKLE_PRIVATE_KEY" > /tmp/sparkle_key
+          SIGNATURE=$("$SIGN_UPDATE" -f /tmp/sparkle_key dist/BrowserRouter.zip)
+          rm -f /tmp/sparkle_key
+          echo "SPARKLE_SIGNATURE=$SIGNATURE" >> "$GITHUB_ENV"
+          echo "Signed successfully"
+
+      - name: Update appcast.xml
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          python3 scripts/update_appcast.py \
+            --version "$VERSION" \
+            --signature "$SPARKLE_SIGNATURE" \
+            --file dist/BrowserRouter.zip
+
+      - name: Commit updated appcast.xml
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout main
+          git add appcast.xml
+          git diff --cached --quiet && echo "No appcast changes" || \
+            (git commit -m "Update appcast.xml for ${GITHUB_REF_NAME}" && git push origin main)
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SHA256=$(shasum -a 256 dist/BrowserRouter.zip | awk '{print $1}')
+          gh release create "$GITHUB_REF_NAME" dist/BrowserRouter.zip \
+            --title "$GITHUB_REF_NAME" \
+            --notes "SHA256: \`${SHA256}\`"

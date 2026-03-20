@@ -55,11 +55,28 @@ ditto -ck --keepParent "$APP_PATH" "$ZIP_PATH"
 rm -rf "$DERIVED_DATA"
 
 SIZE=$(du -h "$ZIP_PATH" | cut -f1)
+
+# Sign update with Sparkle's sign_update tool (if available)
+SPARKLE_SIGN="$(find ~/Library/Developer/Xcode/DerivedData -path '*/SourcePackages/artifacts/sparkle/Sparkle/bin/sign_update' -print -quit 2>/dev/null)"
+if [ -n "$SPARKLE_SIGN" ] && [ -x "$SPARKLE_SIGN" ]; then
+    echo "🔏 Signing update with Sparkle..."
+    SIGNATURE=$("$SPARKLE_SIGN" "$ZIP_PATH" 2>&1) || true
+    echo "   Signature: ${SIGNATURE}"
+else
+    echo "⚠️  Sparkle sign_update not found — skipping EdDSA signing"
+    echo "   Build once in Xcode to fetch Sparkle artifacts, then re-run."
+fi
+
+# Generate SHA256 checksum
+SHA256=$(shasum -a 256 "$ZIP_PATH" | awk '{print $1}')
+echo "${SHA256}  ${SCHEME}.zip" > "${OUTPUT_DIR}/SHA256.txt"
+
 echo ""
 echo "✅ Done!"
 echo "   Version: ${VERSION} (${BUILD_NUMBER})"
 echo "   Output:  ${ZIP_PATH}"
 echo "   Size:    ${SIZE}"
+echo "   SHA256:  ${SHA256}"
 echo ""
 echo "📤 Upload to GitHub Releases or distribute directly."
 echo "   Users can install with:"
