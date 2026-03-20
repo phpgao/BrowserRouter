@@ -38,4 +38,34 @@ final class BrowserManagerTests: XCTestCase {
         let result = manager.browser(forId: "com.fake.NotABrowser")
         XCTAssertNil(result)
     }
+
+    // MARK: - Refresh
+
+    func test_refresh_repopulatesBrowserList() async {
+        let manager = BrowserManager()
+        let beforeCount = manager.installedBrowsers.count
+        manager.refresh()
+        XCTAssertEqual(manager.installedBrowsers.count, beforeCount)
+    }
+
+    // MARK: - Browser Properties
+
+    func test_safari_hasVersion() async {
+        let manager = BrowserManager()
+        let safari = manager.browser(forId: "com.apple.Safari")
+        XCTAssertNotNil(safari?.version, "Safari should have a version string")
+    }
+
+    func test_safari_hasIcon() async {
+        let manager = BrowserManager()
+        let safari = manager.browser(forId: "com.apple.Safari")
+        XCTAssertNotNil(safari?.icon, "Safari should have an icon")
+    }
+
+    func test_detectedBrowsers_haveUniqueIds() async {
+        let manager = BrowserManager()
+        let ids = manager.installedBrowsers.map { $0.id }
+        XCTAssertEqual(ids.count, Set(ids).count, "Browser IDs should be unique")
+    }
+
 }
