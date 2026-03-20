@@ -99,6 +99,64 @@ final class AppStateStore: ObservableObject {
         saveRules()
     }
 
+    // MARK: - Export / Import
+
+    /// Lightweight export representation — omits the internal UUID.
+    private struct ExportRule: Codable {
+        let pattern: String
+        let browserId: String
+        let isEnabled: Bool
+    }
+
+    /// Export current rules to a JSON file (without internal id).
+    func exportRules(to url: URL) throws {
+        let exportable = rules.map { ExportRule(pattern: $0.pattern, browserId: $0.browserId, isEnabled: $0.isEnabled) }
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        let data = try encoder.encode(exportable)
+        try data.write(to: url, options: .atomic)
+    }
+
+    enum ImportMode { case merge, replace }
+
+    struct ImportResult {
+        let importedCount: Int
+        let skippedCount: Int
+    }
+
+    /// Import rules from a JSON file.
+    /// - `mode`: merge (keep existing, append new deduplicated) or replace (clear all, import).
+    func importRules(from url: URL, mode: ImportMode) throws -> ImportResult {
+        let data = try Data(contentsOf: url)
+        let raw = try JSONDecoder().decode([ExportRule].self, from: data)
+        let incoming = raw.map { BrowserRule(pattern: $0.pattern, browserId: $0.browserId, isEnabled: $0.isEnabled) }
+
+        var importedCount = 0
+        var skippedCount = 0
+
+        switch mode {
+        case .replace:
+            importedCount = incoming.count
+            rules = incoming
+        case .merge:
+            let existingPatterns = Set(rules.map { $0.pattern })
+            for rule in incoming {
+                if existingPatterns.contains(rule.pattern) {
+                    skippedCount += 1
+                } else {
+                    rules.append(rule)
+                    importedCount += 1
+                }
+            }
+        }
+
+        saveRules()
+        return ImportResult(
+            importedCount: importedCount,
+            skippedCount: skippedCount
+        )
+    }
+
     // MARK: - Click Stats
 
     func recordClick(browserId: String) {

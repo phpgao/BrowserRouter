@@ -78,31 +78,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func route(url: URL) {
-        // Hold ⌘ to force browser picker regardless of rules
-        if NSEvent.modifierFlags.contains(.command) {
-            showPicker(for: url)
-            return
-        }
+        let matched = urlRouter?.match(url)
+        let browserInstalled = matched.map { browserManager.browser(forId: $0.browserId) != nil } ?? false
+        let action = RouteResolver.resolve(
+            matchedRule: matched,
+            browserInstalled: browserInstalled,
+            defaultBehavior: settings.defaultBehavior,
+            forceShowPicker: NSEvent.modifierFlags.contains(.command)
+        )
 
-        // 1. Try rule match
-        if let rule = urlRouter?.match(url) {
-            let opened = browserManager.open(url: url, browserId: rule.browserId)
-            if opened {
-                ruleStore.recordClick(browserId: rule.browserId)
-                return
-            }
-            // Browser from rule not installed — fall through to fallback
-        }
-
-        // 2. No rule match (or matched browser not installed) — use fallback behavior
-        switch settings.defaultBehavior {
-        case .showPicker:
-            showPicker(for: url)
-        case .openInBrowser(let browserId):
+        switch action {
+        case .openBrowser(let browserId):
             browserManager.open(url: url, browserId: browserId)
             ruleStore.recordClick(browserId: browserId)
+        case .showPicker:
+            showPicker(for: url)
+        case .showWarning(let rule):
+            showBrowserMissingAlert(for: url, rule: rule)
         case .doNothing:
-            break  // Intentionally discard
+            break
         }
     }
 
@@ -138,6 +132,64 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 self.browserManager.open(url: url, browserId: browserId)
                 self.ruleStore.recordClick(browserId: browserId)
             }
+        )
+        pickerWindow?.show()
+    }
+
+    // MARK: - Browser Missing Alert
+
+    private func showBrowserMissingAlert(for url: URL, rule: BrowserRule) {
+        let alert = NSAlert()
+        alert.messageText = NSLocalizedString("Browser Not Found", comment: "")
+        alert.informativeText = String(
+            format: NSLocalizedString(
+                "Rule \"%@\" matched, but the browser (%@) is not installed.\n\nWould you like to choose another browser to open this URL?",
+                comment: ""
+            ),
+            rule.pattern, rule.browserId
+        )
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: NSLocalizedString("Choose Browser", comment: ""))
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
+
+        NSApp.activate(ignoringOtherApps: true)
+        let response = alert.runModal()
+        if response == .alertFirstButtonReturn {
+            showPickerAndUpdateRule(for: url, rule: rule)
+        }
+    }
+
+    /// Shows the browser picker; when the user selects a browser, also updates the rule's browserId.
+    private func showPickerAndUpdateRule(for url: URL, rule: BrowserRule) {
+        let cursorPosition = NSEvent.mouseLocation
+        let browsers = store.visibleBrowsers
+
+        pickerWindow = FloatingPickerWindow(
+            browsers: browsers,
+            atPosition: cursorPosition,
+            showQuickAdd: false,
+            incognitoHoverEnabled: settings.incognitoHoverEnabled,
+            incognitoHoverDelay: settings.incognitoHoverDelay,
+            onSelect: { [weak self] browserId, isIncognito in
+                guard let self else { return }
+                // Open the URL
+                if isIncognito {
+                    self.browserManager.openIncognito(url: url, browserId: browserId)
+                } else {
+                    self.browserManager.open(url: url, browserId: browserId)
+                }
+                self.ruleStore.recordClick(browserId: browserId)
+
+                // Update the rule's browser
+                if var rules = try? self.ruleStore.loadRules(),
+                   let idx = rules.firstIndex(where: { $0.id == rule.id }) {
+                    rules[idx].browserId = browserId
+                    try? self.ruleStore.save(rules: rules)
+                    self.reloadSettings()
+                }
+            },
+            onQuickAdd: {},
+            onRuleSaved: nil
         )
         pickerWindow?.show()
     }

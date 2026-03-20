@@ -30,8 +30,8 @@ final class FloatingPickerWindow {
     private let onQuickAdd: () -> Void
 
     // Track event monitors for cleanup
-    private var localMonitor: Any?
-    private var globalMonitor: Any?
+    private nonisolated(unsafe) var localMonitor: Any?
+    private nonisolated(unsafe) var globalMonitor: Any?
 
     private var quickAddPanel: NSPanel?
     private var onRuleSaved: ((String, String) -> Void)?

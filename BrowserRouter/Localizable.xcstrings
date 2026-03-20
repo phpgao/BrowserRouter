@@ -1,629 +1,2374 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "About" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "关于" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "關於" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "について" } }
-      }
-    },
-    "A lightweight macOS app that routes URLs to different browsers based on rules." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "一款轻量级 macOS 应用，根据规则将 URL 路由到不同的浏览器。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "一款輕量級 macOS 應用程式，根據規則將 URL 路由到不同的瀏覽器。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ルールに基づいてURLを異なるブラウザにルーティングする軽量なmacOSアプリ。" } }
-      }
-    },
-    "General" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "通用" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "一般" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "一般" } }
-      }
-    },
-    "Browsers" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "浏览器" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "瀏覽器" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ブラウザ" } }
-      }
-    },
-    "Reset Click Stats" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "清除点击统计" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "清除點擊統計" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "クリック統計をリセット" } }
-      }
-    },
-    "Rules" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ルール" } }
-      }
-    },
-    "Supported browsers: Chrome, Chrome Canary, Chromium, Edge, Firefox, Brave, Opera, Opera GX, Vivaldi, Yandex" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "支持的浏览器：Chrome、Chrome Canary、Chromium、Edge、Firefox、Brave、Opera、Opera GX、Vivaldi、Yandex" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "支援的瀏覽器：Chrome、Chrome Canary、Chromium、Edge、Firefox、Brave、Opera、Opera GX、Vivaldi、Yandex" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "対応ブラウザ：Chrome、Chrome Canary、Chromium、Edge、Firefox、Brave、Opera、Opera GX、Vivaldi、Yandex" } }
-      }
-    },
-    "Default Browser" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "默认浏览器" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "預設瀏覽器" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "デフォルトブラウザ" } }
-      }
-    },
-    "Set as Default" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "设为默认" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "設為預設" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "デフォルトに設定" } }
-      }
-    },
-    "Currently set as default" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "当前已设为默认" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "目前已設為預設" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "現在デフォルトに設定済み" } }
-      }
-    },
-    "Fallback Behavior" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "后备行为" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "後備行為" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "フォールバック動作" } }
-      }
-    },
-    "No supported browsers detected. Please install a browser." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "未检测到支持的浏览器，请安装浏览器。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "未偵測到支援的瀏覽器，請安裝瀏覽器。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "対応ブラウザが検出されません。ブラウザをインストールしてください。" } }
-      }
-    },
-    "When no rule matches:" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "无规则匹配时：" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "無規則匹配時：" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ルールが一致しない場合：" } }
-      }
-    },
-    "Show browser picker" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "显示浏览器选择器" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "顯示瀏覽器選擇器" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ブラウザ選択を表示" } }
-      }
-    },
-    "Open in specific browser" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "在指定浏览器中打开" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "在指定瀏覽器中開啟" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "指定ブラウザで開く" } }
-      }
-    },
-    "Browser:" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "浏览器：" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "瀏覽器：" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ブラウザ：" } }
-      }
-    },
-    "Show quick-add rule button in picker" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "在选择器中显示快速添加规则按钮" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "在選擇器中顯示快速新增規則按鈕" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ピッカーにクイック追加ボタンを表示" } }
-      }
-    },
-    "System" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "系统" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "系統" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "システム" } }
-      }
-    },
-    "Launch at Login" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "登录时启动" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "登入時啟動" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ログイン時に起動" } }
-      }
-    },
-    "Incognito Mode" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "隐身模式" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "隱身模式" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "シークレットモード" } }
-      }
-    },
-    "Enable hover-to-incognito in browser picker" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "在浏览器选择器中启用悬停进入隐身模式" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "在瀏覽器選擇器中啟用懸停進入隱身模式" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ブラウザ選択でホバーしてシークレットモードを有効化" } }
-      }
-    },
-    "Hover delay:" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "悬停延迟：" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "懸停延遲：" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ホバー遅延：" } }
-      }
-    },
-    "Hold your cursor over a browser icon to switch to incognito mode before clicking." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "将光标悬停在浏览器图标上，点击前可切换至隐身模式。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "將游標懸停在瀏覽器圖示上，點擊前可切換至隱身模式。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ブラウザアイコンにカーソルを合わせると、クリック前にシークレットモードに切り替わります。" } }
-      }
-    },
-    "Could Not Set Default Browser" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "无法设置默认浏览器" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "無法設定預設瀏覽器" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "デフォルトブラウザを設定できません" } }
-      }
-    },
-    "Please set BrowserRouter manually in System Settings → Desktop & Dock → Default web browser." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "请在系统设置 → 桌面与程序坞 → 默认网页浏览器中手动设置 BrowserRouter。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "請在系統設定 → 桌面與 Dock → 預設網頁瀏覽器中手動設定 BrowserRouter。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "システム設定 → デスクトップとDock → デフォルトのWebブラウザで手動設定してください。" } }
-      }
-    },
-    "Drag to reorder. Uncheck to hide from the browser picker." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "拖拽排序。取消勾选可从浏览器选择器中隐藏。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "拖曳排序。取消勾選可從瀏覽器選擇器中隱藏。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ドラッグで並べ替え。チェックを外すとブラウザ選択から非表示になります。" } }
-      }
-    },
-    "%lld clicks" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "%lld 次点击" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "%lld 次點擊" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%lld 回クリック" } }
-      }
-    },
-    "Open Preferences…" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "打开偏好设置…" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "開啟偏好設定…" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "環境設定を開く…" } }
-      }
-    },
-    "Quit BrowserRouter" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "退出 BrowserRouter" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "結束 BrowserRouter" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "BrowserRouter を終了" } }
-      }
-    },
-    "URL Rules" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "URL 规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "URL 規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "URL ルール" } }
-      }
-    },
-    "Add" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "添加" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "新增" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "追加" } }
-      }
-    },
-    "No rules yet" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "暂无规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "尚無規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ルールがありません" } }
-      }
-    },
-    "Click + Add to create URL routing rules." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "点击 + 添加创建 URL 路由规则。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "點擊 + 新增建立 URL 路由規則。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "「+ 追加」をクリックしてURLルーティングルールを作成します。" } }
-      }
-    },
-    "Drag to reorder ↕" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "拖拽排序 ↕" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "拖曳排序 ↕" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ドラッグで並べ替え ↕" } }
-      }
-    },
-    "Add Rules" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "添加规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "新增規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ルールを追加" } }
-      }
-    },
-    "Edit Rule" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "编辑规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "編輯規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ルールを編集" } }
-      }
-    },
-    "URL Patterns (one per line)" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "URL 模式（每行一个）" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "URL 模式（每行一個）" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "URLパターン（1行に1つ）" } }
-      }
-    },
-    "Supports wildcards: * (single label) and ** (multi-level)" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "支持通配符：*（单级）和 **（多级）" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "支援萬用字元：*（單層）和 **（多層）" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ワイルドカード対応：*（単一レベル）と **（複数レベル）" } }
-      }
-    },
-    "Open with" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "打开方式" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "開啟方式" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "使用するブラウザ" } }
-      }
-    },
-    "Cancel" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "取消" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "取消" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "キャンセル" } }
-      }
-    },
-    "Save" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "保存" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "儲存" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "保存" } }
-      }
-    },
-    "Add Rule for this URL" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "为此 URL 添加规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "為此 URL 新增規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "このURLにルールを追加" } }
-      }
-    },
-    "Pattern" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "模式" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "模式" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "パターン" } }
-      }
-    },
-    "Add Rule" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "添加规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "新增規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ルールを追加" } }
-      }
-    },
-    "Incognito" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "隐身" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "隱身" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "シークレット" } }
-      }
-    },
-    "Quick Add Rule" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "快速添加规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "快速新增規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "クイックルール追加" } }
-      }
-    },
-    "BrowserRouter Preferences" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "BrowserRouter 偏好设置" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "BrowserRouter 偏好設定" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "BrowserRouter 環境設定" } }
-      }
-    },
-    "Browser Not Found" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "未找到浏览器" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "找不到瀏覽器" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ブラウザが見つかりません" } }
-      }
-    },
-    "The browser \"%@\" is no longer installed. Please update your rules in Preferences." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "浏览器 \"%@\" 已不再安装。请在偏好设置中更新规则。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "瀏覽器 \"%@\" 已不再安裝。請在偏好設定中更新規則。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ブラウザ「%@」はインストールされていません。環境設定でルールを更新してください。" } }
-      }
-    },
-    "Open Preferences" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "打开偏好设置" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "開啟偏好設定" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "環境設定を開く" } }
-      }
-    },
-    "OK" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "好" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "好" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "OK" } }
-      }
-    },
-    "Add %lld Rule(s)" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "添加 %lld 条规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "新增 %lld 條規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%lld 件のルールを追加" } }
-      }
-    },
-    "Language" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "语言" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "語言" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "言語" } }
-      }
-    },
-    "System Default" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "跟随系统" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "跟隨系統" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "システムに従う" } }
-      }
-    },
-    "Restart Required" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "需要重启" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "需要重新啟動" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "再起動が必要です" } }
-      }
-    },
-    "The language change will take effect after restarting BrowserRouter." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "语言更改将在重启 BrowserRouter 后生效。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "語言更改將在重新啟動 BrowserRouter 後生效。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "言語の変更は BrowserRouter を再起動後に反映されます。" } }
-      }
-    },
-    "Restart Now" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "立即重启" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "立即重新啟動" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "今すぐ再起動" } }
-      }
-    },
-    "Later" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "稍后" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "稍後" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "後で" } }
-      }
-    },
-    "Wildcard Reference" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "通配符说明" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "萬用字元說明" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ワイルドカードの説明" } }
-      }
-    },
-    "*  — matches a single level (no `.` or `/`)" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "*  — 匹配单级（不含 `.` 和 `/`）" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "*  — 匹配單層（不含 `.` 和 `/`）" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "*  — 単一レベルに一致（`.` と `/` を含まない）" } }
-      }
-    },
-    "** — matches multiple levels (including `.` and `/`)" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "** — 匹配多级（包含 `.` 和 `/`）" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "** — 匹配多層（包含 `.` 和 `/`）" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "** — 複数レベルに一致（`.` と `/` を含む）" } }
-      }
-    },
-    "Use `**` for domains with deep subdomains." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "多级子域名请使用 `**`。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "多層子網域請使用 `**`。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "深いサブドメインには `**` を使用してください。" } }
-      }
-    },
-    "Path matching — use `/` to match URL paths" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "路径匹配 — 使用 `/` 匹配 URL 路径" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "路徑匹配 — 使用 `/` 匹配 URL 路徑" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "パス一致 — `/` でURLパスを一致させます" } }
-      }
-    },
-    "Tip: Use `**` at the end of a path to match all sub-paths." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "提示：在路径末尾使用 `**` 可匹配所有子路径。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "提示：在路徑末尾使用 `**` 可匹配所有子路徑。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ヒント：パスの末尾に `**` を使うと、すべてのサブパスに一致します。" } }
-      }
-    },
-    "Tip: Use `**` at the end of a path to match all sub-paths and params." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "提示：在路径末尾使用 `**` 可匹配所有子路径和参数。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "提示：在路徑末尾使用 `**` 可匹配所有子路徑和參數。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ヒント：パスの末尾に `**` を使うと、すべてのサブパスとパラメータに一致します。" } }
-      }
-    },
-    "Query matching — use `?` to match query parameters" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "参数匹配 — 使用 `?` 匹配查询参数" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "參數匹配 — 使用 `?` 匹配查詢參數" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "クエリ一致 — `?` でクエリパラメータを一致させます" } }
-      }
-    },
-    "Without `?`, query params are ignored" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "不含 `?` 时，查询参数会被忽略" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "不含 `?` 時，查詢參數會被忽略" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "`?` がない場合、クエリパラメータは無視されます" } }
-      }
-    },
-    "Test URL..." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "测试 URL..." } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "測試 URL..." } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "テスト URL..." } }
-      }
-    },
-    "Match" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "匹配" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "匹配" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "一致" } }
-      }
-    },
-    "No rules matched this URL." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "没有规则匹配此 URL。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "沒有規則匹配此 URL。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "このURLに一致するルールがありません。" } }
-      }
-    },
-    "Filtering — clear URL to reorder" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "筛选中 — 清空 URL 以恢复排序" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "篩選中 — 清空 URL 以恢復排序" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "フィルタ中 — URLをクリアして並べ替えを有効化" } }
-      }
-    },
-    "Delete %lld" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "删除 %lld 项" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "刪除 %lld 項" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%lld 件を削除" } }
-      }
-    },
-    "Delete" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "删除" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "刪除" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "削除" } }
-      }
-    },
-    "Select All" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "全选" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "全選" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "すべて選択" } }
-      }
-    },
-    "Deselect All" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "取消全选" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "取消全選" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "選択解除" } }
-      }
-    },
-    "%lld selected" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已选择 %lld 项" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "已選擇 %lld 項" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%lld 件選択中" } }
-      }
-    },
-    "Filter by browser:" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "按浏览器筛选：" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "按瀏覽器篩選：" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ブラウザで絞り込み：" } }
-      }
-    },
-    "All" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "全部" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "全部" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "すべて" } }
-      }
-    },
-    "%lld rule(s) matched. Reorder disabled during filtering." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "%lld 条规则匹配。筛选期间禁用排序。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "%lld 條規則匹配。篩選期間禁用排序。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%lld 件のルールが一致。フィルタ中は並べ替え無効。" } }
-      }
-    },
-    "Disable" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "禁用" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "停用" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "無効化" } }
-      }
-    },
-    "Enable" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "启用" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "啟用" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "有効化" } }
-      }
-    },
-    "Enable %lld Rules" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "启用 %lld 条规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "啟用 %lld 條規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%lld 件のルールを有効化" } }
-      }
-    },
-    "Disable %lld Rules" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "禁用 %lld 条规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "停用 %lld 條規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%lld 件のルールを無効化" } }
-      }
-    },
-    "Delete %lld Rules" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "删除 %lld 条规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "刪除 %lld 條規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%lld 件のルールを削除" } }
-      }
-    },
-    "Edit…" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "编辑…" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "編輯…" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "編集…" } }
-      }
-    },
-    "Copy Pattern" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "拷贝规则" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "拷貝規則" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "パターンをコピー" } }
-      }
-    },
-    "URL Pattern" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "URL 模式" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "URL 模式" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "URLパターン" } }
-      }
-    },
-    "Confirm Deletion" : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "确认删除" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "確認刪除" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "削除の確認" } }
-      }
-    },
-    "Are you sure you want to delete %lld selected rules? This cannot be undone." : {
-      "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "确定要删除 %lld 条选中的规则吗？此操作无法撤销。" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "確定要刪除 %lld 條選中的規則嗎？此操作無法撤銷。" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "選択した %lld 件のルールを削除しますか？この操作は元に戻せません。" } }
-      }
-    }
+  "sourceLanguage": "en",
+  "strings": {
+    "": {},
+    ".../bar?id=1": {},
+    ".../bar?id=123": {},
+    ".../bar?x=1": {},
+    "*  — matches a single level (no `.` or `/`)": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "*  — 単一レベルに一致（`.` と `/` を含まない）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "*  — 匹配单级（不含 `.` 和 `/`）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "*  — 匹配單層（不含 `.` 和 `/`）"
+          }
+        }
+      }
+    },
+    "*.example.com": {},
+    "*.foo.com": {},
+    "*.foo.com/bar": {},
+    "*.foo.com/bar?id=**": {},
+    "*.foo.com/bar**": {},
+    "** — matches multiple levels (including `.` and `/`)": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "** — 複数レベルに一致（`.` と `/` を含む）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "** — 匹配多级（包含 `.` 和 `/`）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "** — 匹配多層（包含 `.` 和 `/`）"
+          }
+        }
+      }
+    },
+    "**.foo.com": {},
+    "%lld browser(s) not found, reassigned to fallback.": {
+      "extractionState": "stale",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件のブラウザが見つからず、フォールバックに再割り当てしました。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个浏览器未找到，已重新分配到兜底浏览器。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 個瀏覽器未找到，已重新分配到備用瀏覽器。"
+          }
+        }
+      }
+    },
+    "%lld clicks": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 回クリック"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 次点击"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 次點擊"
+          }
+        }
+      }
+    },
+    "%lld duplicate(s) skipped.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件の重複ルールをスキップしました。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 条重复规则已跳过。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 條重複規則已跳過。"
+          }
+        }
+      }
+    },
+    "%lld rule(s) imported.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件のルールをインポートしました。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已导入 %lld 条规则。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已匯入 %lld 條規則。"
+          }
+        }
+      }
+    },
+    "%lld rule(s) matched. Reorder disabled during filtering.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件のルールが一致。フィルタ中は並べ替え無効。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 条规则匹配。筛选期间禁用排序。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 條規則匹配。篩選期間禁用排序。"
+          }
+        }
+      }
+    },
+    "%lld selected": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件選択中"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已选择 %lld 项"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已選擇 %lld 項"
+          }
+        }
+      }
+    },
+    "→": {},
+    "→ %@": {},
+    "✦": {},
+    "A lightweight macOS app that routes URLs to different browsers based on rules.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ルールに基づいてURLを異なるブラウザにルーティングする軽量なmacOSアプリ。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一款轻量级 macOS 应用，根据规则将 URL 路由到不同的浏览器。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一款輕量級 macOS 應用程式，根據規則將 URL 路由到不同的瀏覽器。"
+          }
+        }
+      }
+    },
+    "a.b.c.foo.com": {},
+    "a.b.foo.com": {},
+    "About": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "について"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关于"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "關於"
+          }
+        }
+      }
+    },
+    "Add": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "追加"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新增"
+          }
+        }
+      }
+    },
+    "Add %lld Rule(s)": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件のルールを追加"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加 %lld 条规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新增 %lld 條規則"
+          }
+        }
+      }
+    },
+    "Add Rule": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ルールを追加"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新增規則"
+          }
+        }
+      }
+    },
+    "Add Rule for this URL": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このURLにルールを追加"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "为此 URL 添加规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "為此 URL 新增規則"
+          }
+        }
+      }
+    },
+    "Add Rules": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ルールを追加"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新增規則"
+          }
+        }
+      }
+    },
+    "All": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部"
+          }
+        }
+      }
+    },
+    "Apply": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "適用"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "套用"
+          }
+        }
+      }
+    },
+    "Are you sure you want to delete %lld selected rules? This cannot be undone.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択した %lld 件のルールを削除しますか？この操作は元に戻せません。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确定要删除 %lld 条选中的规则吗？此操作无法撤销。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確定要刪除 %lld 條選中的規則嗎？此操作無法撤銷。"
+          }
+        }
+      }
+    },
+    "bar.foo.com": {},
+    "Browser Not Found": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ブラウザが見つかりません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未找到浏览器"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "找不到瀏覽器"
+          }
+        }
+      }
+    },
+    "Browser:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ブラウザ："
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "浏览器："
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "瀏覽器："
+          }
+        }
+      }
+    },
+    "BrowserRouter Preferences": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BrowserRouter 環境設定"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BrowserRouter 偏好设置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BrowserRouter 偏好設定"
+          }
+        }
+      }
+    },
+    "Browsers": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ブラウザ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "浏览器"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "瀏覽器"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        }
+      }
+    },
+    "Clear search": {},
+    "Click + Add to create URL routing rules.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「+ 追加」をクリックしてURLルーティングルールを作成します。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点击 + 添加创建 URL 路由规则。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "點擊 + 新增建立 URL 路由規則。"
+          }
+        }
+      }
+    },
+    "Confirm Deletion": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除の確認"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认删除"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確認刪除"
+          }
+        }
+      }
+    },
+    "Copy Pattern": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パターンをコピー"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拷贝规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拷貝規則"
+          }
+        }
+      }
+    },
+    "Could Not Set Default Browser": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デフォルトブラウザを設定できません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法设置默认浏览器"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法設定預設瀏覽器"
+          }
+        }
+      }
+    },
+    "Currently set as default": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在デフォルトに設定済み"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前已设为默认"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目前已設為預設"
+          }
+        }
+      }
+    },
+    "Default Browser": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デフォルトブラウザ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "默认浏览器"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "預設瀏覽器"
+          }
+        }
+      }
+    },
+    "Delete": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刪除"
+          }
+        }
+      }
+    },
+    "Delete %lld": {
+      "extractionState": "stale",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件を削除"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除 %lld 项"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刪除 %lld 項"
+          }
+        }
+      }
+    },
+    "Delete %lld Rules": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件のルールを削除"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除 %lld 条规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刪除 %lld 條規則"
+          }
+        }
+      }
+    },
+    "Delete rule": {},
+    "Deselect All": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択解除"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消全选"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消全選"
+          }
+        }
+      }
+    },
+    "Disable": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無効化"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "禁用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停用"
+          }
+        }
+      }
+    },
+    "Disable %lld Rules": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件のルールを無効化"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "禁用 %lld 条规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停用 %lld 條規則"
+          }
+        }
+      }
+    },
+    "Drag to reorder ↕": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ドラッグで並べ替え ↕"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拖拽排序 ↕"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拖曳排序 ↕"
+          }
+        }
+      }
+    },
+    "Drag to reorder. Uncheck to hide from the browser picker.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ドラッグで並べ替え。チェックを外すとブラウザ選択から非表示になります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拖拽排序。取消勾选可从浏览器选择器中隐藏。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拖曳排序。取消勾選可從瀏覽器選擇器中隱藏。"
+          }
+        }
+      }
+    },
+    "Edit rule": {},
+    "Edit Rule": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ルールを編集"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編輯規則"
+          }
+        }
+      }
+    },
+    "Edit…": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編集…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編輯…"
+          }
+        }
+      }
+    },
+    "Enable": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有効化"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "啟用"
+          }
+        }
+      }
+    },
+    "Enable %lld Rules": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 件のルールを有効化"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启用 %lld 条规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "啟用 %lld 條規則"
+          }
+        }
+      }
+    },
+    "Enable hover-to-incognito in browser picker": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ブラウザ選択でホバーしてシークレットモードを有効化"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在浏览器选择器中启用悬停进入隐身模式"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在瀏覽器選擇器中啟用懸停進入隱身模式"
+          }
+        }
+      }
+    },
+    "English": {},
+    "Export": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "エクスポート"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导出"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯出"
+          }
+        }
+      }
+    },
+    "Export Rules": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ルールをエクスポート"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导出规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯出規則"
+          }
+        }
+      }
+    },
+    "Fallback Behavior": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォールバック動作"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "后备行为"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "後備行為"
+          }
+        }
+      }
+    },
+    "Fallback Browser": {
+      "extractionState": "stale",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォールバックブラウザ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "兜底浏览器"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "備用瀏覽器"
+          }
+        }
+      }
+    },
+    "Filter by browser:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ブラウザで絞り込み："
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按浏览器筛选："
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按瀏覽器篩選："
+          }
+        }
+      }
+    },
+    "Filtering — clear URL to reorder": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィルタ中 — URLをクリアして並べ替えを有効化"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "筛选中 — 清空 URL 以恢复排序"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "篩選中 — 清空 URL 以恢復排序"
+          }
+        }
+      }
+    },
+    "General": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一般"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一般"
+          }
+        }
+      }
+    },
+    "Hide %@": {},
+    "Hold your cursor over a browser icon to switch to incognito mode before clicking.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ブラウザアイコンにカーソルを合わせると、クリック前にシークレットモードに切り替わります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "将光标悬停在浏览器图标上，点击前可切换至隐身模式。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "將游標懸停在瀏覽器圖示上，點擊前可切換至隱身模式。"
+          }
+        }
+      }
+    },
+    "Hover delay:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ホバー遅延："
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "悬停延迟："
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "懸停延遲："
+          }
+        }
+      }
+    },
+    "If imported rules reference a browser not installed on this Mac, they will be reassigned to:": {
+      "extractionState": "stale",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "インポートしたルールが未インストールのブラウザを参照している場合、次のブラウザに再割り当てされます："
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "如果导入的规则引用了本机未安装的浏览器，将被重新分配到："
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "如果匯入的規則參照了本機未安裝的瀏覽器，將被重新分配到："
+          }
+        }
+      }
+    },
+    "Import": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "インポート"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯入"
+          }
+        }
+      }
+    },
+    "Import Complete": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "インポート完了"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入完成"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯入完成"
+          }
+        }
+      }
+    },
+    "Import Mode": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "インポートモード"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入模式"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯入模式"
+          }
+        }
+      }
+    },
+    "Import Rules": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ルールをインポート"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯入規則"
+          }
+        }
+      }
+    },
+    "Incognito": {
+      "extractionState": "stale",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "シークレット"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐身"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隱身"
+          }
+        }
+      }
+    },
+    "Incognito Mode": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "シークレットモード"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐身模式"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隱身模式"
+          }
+        }
+      }
+    },
+    "Keep existing rules and add new ones (duplicates skipped).": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "既存のルールを保持し、新しいルールを追加します（重複はスキップ）。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留现有规则并添加新规则（重复的将被跳过）。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留現有規則並新增新規則（重複的將被跳過）。"
+          }
+        }
+      }
+    },
+    "Language": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "言語"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "语言"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "語言"
+          }
+        }
+      }
+    },
+    "Later": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "後で"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "稍后"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "稍後"
+          }
+        }
+      }
+    },
+    "Launch at Login": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログイン時に起動"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录时启动"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登入時啟動"
+          }
+        }
+      }
+    },
+    "Match": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一致"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匹配"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匹配"
+          }
+        }
+      }
+    },
+    "Merge": {
+      "comment": "Import mode: merge",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "マージ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "合并"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "合併"
+          }
+        }
+      }
+    },
+    "No rules matched this URL.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このURLに一致するルールがありません。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有规则匹配此 URL。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "沒有規則匹配此 URL。"
+          }
+        }
+      }
+    },
+    "No rules yet": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ルールがありません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚無規則"
+          }
+        }
+      }
+    },
+    "No supported browsers detected. Please install a browser.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "対応ブラウザが検出されません。ブラウザをインストールしてください。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未检测到支持的浏览器，请安装浏览器。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未偵測到支援的瀏覽器，請安裝瀏覽器。"
+          }
+        }
+      }
+    },
+    "OK": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好"
+          }
+        }
+      }
+    },
+    "Open in specific browser": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "指定ブラウザで開く"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在指定浏览器中打开"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在指定瀏覽器中開啟"
+          }
+        }
+      }
+    },
+    "Open Preferences": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "環境設定を開く"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开偏好设置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟偏好設定"
+          }
+        }
+      }
+    },
+    "Open Preferences…": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "環境設定を開く…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开偏好设置…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟偏好設定…"
+          }
+        }
+      }
+    },
+    "Open with": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用するブラウザ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开方式"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟方式"
+          }
+        }
+      }
+    },
+    "Path matching — use `/` to match URL paths": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パス一致 — `/` でURLパスを一致させます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "路径匹配 — 使用 `/` 匹配 URL 路径"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "路徑匹配 — 使用 `/` 匹配 URL 路徑"
+          }
+        }
+      }
+    },
+    "Pattern": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パターン"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模式"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模式"
+          }
+        }
+      }
+    },
+    "Please set BrowserRouter manually in System Settings → Desktop & Dock → Default web browser.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システム設定 → デスクトップとDock → デフォルトのWebブラウザで手動設定してください。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请在系统设置 → 桌面与程序坞 → 默认网页浏览器中手动设置 BrowserRouter。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請在系統設定 → 桌面與 Dock → 預設網頁瀏覽器中手動設定 BrowserRouter。"
+          }
+        }
+      }
+    },
+    "Query matching — use `?` to match query parameters": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クエリ一致 — `?` でクエリパラメータを一致させます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "参数匹配 — 使用 `?` 匹配查询参数"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "參數匹配 — 使用 `?` 匹配查詢參數"
+          }
+        }
+      }
+    },
+    "Quick Add Rule": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クイックルール追加"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快速添加规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快速新增規則"
+          }
+        }
+      }
+    },
+    "Quit BrowserRouter": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BrowserRouter を終了"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "退出 BrowserRouter"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "結束 BrowserRouter"
+          }
+        }
+      }
+    },
+    "Remove all existing rules and import.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "既存のルールをすべて削除してインポートします。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除所有现有规则并导入。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除所有現有規則並匯入。"
+          }
+        }
+      }
+    },
+    "Replace": {
+      "comment": "Import mode: replace",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "置換"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "替换"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "替換"
+          }
+        }
+      }
+    },
+    "Reset Click Stats": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリック統計をリセット"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除点击统计"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除點擊統計"
+          }
+        }
+      }
+    },
+    "Restart Now": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今すぐ再起動"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "立即重启"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "立即重新啟動"
+          }
+        }
+      }
+    },
+    "Restart Required": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "再起動が必要です"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要重启"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要重新啟動"
+          }
+        }
+      }
+    },
+    "Rules": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ルール"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "規則"
+          }
+        }
+      }
+    },
+    "Rules targeting browsers not installed on this Mac will be automatically disabled.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未インストールのブラウザを対象とするルールは自動的に無効化されます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目标浏览器未安装的规则将自动禁用。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目標瀏覽器未安裝的規則將自動停用。"
+          }
+        }
+      }
+    },
+    "Save": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "儲存"
+          }
+        }
+      }
+    },
+    "Select All": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて選択"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全选"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全選"
+          }
+        }
+      }
+    },
+    "Set as Default": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デフォルトに設定"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设为默认"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設為預設"
+          }
+        }
+      }
+    },
+    "Show %@": {},
+    "Show browser picker": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ブラウザ選択を表示"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示浏览器选择器"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "顯示瀏覽器選擇器"
+          }
+        }
+      }
+    },
+    "Show quick-add rule button in picker": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ピッカーにクイック追加ボタンを表示"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在选择器中显示快速添加规则按钮"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在選擇器中顯示快速新增規則按鈕"
+          }
+        }
+      }
+    },
+    "Supported browsers: Chrome, Chrome Canary, Chromium, Edge, Firefox, Brave, Opera, Opera GX, Vivaldi, Yandex": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "対応ブラウザ：Chrome、Chrome Canary、Chromium、Edge、Firefox、Brave、Opera、Opera GX、Vivaldi、Yandex"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支持的浏览器：Chrome、Chrome Canary、Chromium、Edge、Firefox、Brave、Opera、Opera GX、Vivaldi、Yandex"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支援的瀏覽器：Chrome、Chrome Canary、Chromium、Edge、Firefox、Brave、Opera、Opera GX、Vivaldi、Yandex"
+          }
+        }
+      }
+    },
+    "Supports wildcards: * (single label) and ** (multi-level)": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ワイルドカード対応：*（単一レベル）と **（複数レベル）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支持通配符：*（单级）和 **（多级）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支援萬用字元：*（單層）和 **（多層）"
+          }
+        }
+      }
+    },
+    "System": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システム"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系统"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系統"
+          }
+        }
+      }
+    },
+    "System Default": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システムに従う"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跟随系统"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跟隨系統"
+          }
+        }
+      }
+    },
+    "Test URL...": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "テスト URL..."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "测试 URL..."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "測試 URL..."
+          }
+        }
+      }
+    },
+    "The browser \"%@\" is no longer installed. Please update your rules in Preferences.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ブラウザ「%@」はインストールされていません。環境設定でルールを更新してください。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "浏览器 \"%@\" 已不再安装。请在偏好设置中更新规则。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "瀏覽器 \"%@\" 已不再安裝。請在偏好設定中更新規則。"
+          }
+        }
+      }
+    },
+    "The language change will take effect after restarting BrowserRouter.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "言語の変更は BrowserRouter を再起動後に反映されます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "语言更改将在重启 BrowserRouter 后生效。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "語言更改將在重新啟動 BrowserRouter 後生效。"
+          }
+        }
+      }
+    },
+    "Tip: Use `**` at the end of a path to match all sub-paths and params.": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ヒント：パスの末尾に `**` を使うと、すべてのサブパスとパラメータに一致します。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提示：在路径末尾使用 `**` 可匹配所有子路径和参数。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提示：在路徑末尾使用 `**` 可匹配所有子路徑和參數。"
+          }
+        }
+      }
+    },
+    "Tip: Use `**` at the end of a path to match all sub-paths.": {
+      "extractionState": "stale",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ヒント：パスの末尾に `**` を使うと、すべてのサブパスに一致します。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提示：在路径末尾使用 `**` 可匹配所有子路径。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提示：在路徑末尾使用 `**` 可匹配所有子路徑。"
+          }
+        }
+      }
+    },
+    "URL Pattern": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URLパターン"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL 模式"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL 模式"
+          }
+        }
+      }
+    },
+    "URL Patterns (one per line)": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URLパターン（1行に1つ）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL 模式（每行一个）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL 模式（每行一個）"
+          }
+        }
+      }
+    },
+    "URL Rules": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL ルール"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL 规则"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL 規則"
+          }
+        }
+      }
+    },
+    "Use `**` for domains with deep subdomains.": {
+      "extractionState": "stale",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "深いサブドメインには `**` を使用してください。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "多级子域名请使用 `**`。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "多層子網域請使用 `**`。"
+          }
+        }
+      }
+    },
+    "When no rule matches:": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ルールが一致しない場合："
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无规则匹配时："
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無規則匹配時："
+          }
+        }
+      }
+    },
+    "Wildcard Reference": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ワイルドカードの説明"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通配符说明"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "萬用字元說明"
+          }
+        }
+      }
+    },
+    "Without `?`, query params are ignored": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "`?` がない場合、クエリパラメータは無視されます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不含 `?` 时，查询参数会被忽略"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不含 `?` 時，查詢參數會被忽略"
+          }
+        }
+      }
+    },
+    "x.foo.com/bar": {},
+    "x.foo.com/bar/baz": {},
+    "日本語": {},
+    "简体中文": {},
+    "繁體中文": {}
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

@@ -33,7 +33,8 @@ struct BrowserPickerView: View {
     ]
 
     var body: some View {
-        HStack(spacing: 8) {
+        VStack(spacing: 4) {
+            HStack(spacing: 8) {
             ForEach(Array(browsers.enumerated()), id: \.element.id) { index, browser in
                 if index > 0 {
                     Rectangle()
@@ -78,9 +79,10 @@ struct BrowserPickerView: View {
                 .frame(width: UIConstants.pickerItemWidth)
                 .accessibilityLabel("Add Rule")
             }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
         .background(
             RoundedRectangle(cornerRadius: UIConstants.pickerCornerRadius, style: .continuous)
                 .fill(.clear)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct RulesListView: View {
     @ObservedObject var store: AppStateStore
@@ -16,6 +17,8 @@ struct RulesListView: View {
     @State private var selection: Set<UUID> = []
     @State private var filterBrowserId: String? = nil  // nil = show all
     @State private var showDeleteConfirm = false
+    @State private var importFileURL: ImportFileURL? = nil
+    @State private var importResultMessage: String? = nil
 
     private var isFiltering: Bool { matchedRuleIds != nil }
 
@@ -183,6 +186,7 @@ struct RulesListView: View {
                                 browserName: browser?.name ?? rule.browserId,
                                 browserIcon: browser?.icon,
                                 isHighlighted: matchedRuleIds != nil,
+                                isBrowserInvalid: browser == nil,
                                 onToggle: { store.saveRules() },
                                 onEdit: { editingRule = rule },
                                 onDelete: {
@@ -245,6 +249,28 @@ struct RulesListView: View {
 
                 Spacer()
 
+                // Export / Import
+                Button {
+                    exportRules()
+                } label: {
+                    Label(NSLocalizedString("Export", comment: ""), systemImage: "square.and.arrow.up")
+                        .font(.caption)
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.blue)
+                .disabled(store.rules.isEmpty)
+                .accessibilityLabel(NSLocalizedString("Export Rules", comment: ""))
+
+                Button {
+                    openImportPanel()
+                } label: {
+                    Label(NSLocalizedString("Import", comment: ""), systemImage: "square.and.arrow.down")
+                        .font(.caption)
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.blue)
+                .accessibilityLabel(NSLocalizedString("Import Rules", comment: ""))
+
                 if !selection.isEmpty {
                     Text(String(format: NSLocalizedString("%lld selected", comment: ""), selection.count))
                         .font(.caption)
@@ -285,6 +311,25 @@ struct RulesListView: View {
             }
         } message: {
             Text(String(format: NSLocalizedString("Are you sure you want to delete %lld selected rules? This cannot be undone.", comment: ""), selection.count))
+        }
+        .sheet(item: $importFileURL) { item in
+            ImportRulesSheet(store: store, fileURL: item.url, onDismiss: { message in
+                importFileURL = nil
+                importResultMessage = message
+            })
+        }
+        .alert(
+            NSLocalizedString("Import Complete", comment: ""),
+            isPresented: Binding(
+                get: { importResultMessage != nil },
+                set: { if !$0 { importResultMessage = nil } }
+            )
+        ) {
+            Button("OK") { importResultMessage = nil }
+        } message: {
+            if let msg = importResultMessage {
+                Text(msg)
+            }
         }
     }
 
@@ -384,6 +429,31 @@ struct RulesListView: View {
         }
         matchedRuleIds = ids
     }
+
+    // MARK: - Export / Import
+
+    private func exportRules() {
+        let panel = NSSavePanel()
+        panel.title = NSLocalizedString("Export Rules", comment: "")
+        panel.nameFieldStringValue = "BrowserRouter-Rules.json"
+        panel.allowedContentTypes = [.json]
+        panel.canCreateDirectories = true
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        do {
+            try store.exportRules(to: url)
+        } catch {
+            NSAlert(error: error).runModal()
+        }
+    }
+
+    private func openImportPanel() {
+        let panel = NSOpenPanel()
+        panel.title = NSLocalizedString("Import Rules", comment: "")
+        panel.allowedContentTypes = [.json]
+        panel.allowsMultipleSelection = false
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        importFileURL = ImportFileURL(url: url)
+    }
 }
 
 // MARK: - RuleRow
@@ -393,6 +463,7 @@ private struct RuleRow: View {
     let browserName: String
     let browserIcon: NSImage?
     let isHighlighted: Bool
+    let isBrowserInvalid: Bool
     let onToggle: () -> Void
     let onEdit: () -> Void
     let onDelete: () -> Void
@@ -416,10 +487,16 @@ private struct RuleRow: View {
                     .foregroundStyle(rule.isEnabled ? .primary : .secondary)
                 HStack(spacing: 4) {
                     Text("→")
+                    if isBrowserInvalid {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.red)
+                            .font(.system(size: 10))
+                    }
                     if let icon = browserIcon {
                         Image(nsImage: resized(icon, to: 14))
                     }
                     Text(browserName)
+                        .foregroundStyle(isBrowserInvalid ? .red : .secondary)
                 }
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -445,4 +522,86 @@ private struct RuleRow: View {
         }
         .padding(.vertical, 2)
     }
+}
+
+// MARK: - Import Rules Sheet
+
+private struct ImportRulesSheet: View {
+    @ObservedObject var store: AppStateStore
+    let fileURL: URL
+    let onDismiss: (String?) -> Void  // pass result message
+
+    @State private var mode: AppStateStore.ImportMode = .merge
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(NSLocalizedString("Import Rules", comment: ""))
+                .font(.headline)
+
+            Text(fileURL.lastPathComponent)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            Divider()
+
+            // Import mode
+            VStack(alignment: .leading, spacing: 8) {
+                Text(NSLocalizedString("Import Mode", comment: ""))
+                    .font(.subheadline)
+
+                Picker("", selection: $mode) {
+                    Text(NSLocalizedString("Merge", comment: "Import mode: merge"))
+                        .tag(AppStateStore.ImportMode.merge)
+                    Text(NSLocalizedString("Replace", comment: "Import mode: replace"))
+                        .tag(AppStateStore.ImportMode.replace)
+                }
+                .pickerStyle(.segmented)
+
+                Text(mode == .merge
+                     ? NSLocalizedString("Keep existing rules and add new ones (duplicates skipped).", comment: "")
+                     : NSLocalizedString("Remove all existing rules and import.", comment: ""))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Divider()
+
+            Text(NSLocalizedString("Rules targeting browsers not installed on this Mac will be automatically disabled.", comment: ""))
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            Spacer()
+
+            HStack {
+                Button(NSLocalizedString("Cancel", comment: "")) { onDismiss(nil) }
+                    .keyboardShortcut(.cancelAction)
+                Spacer()
+                Button(NSLocalizedString("Import", comment: "")) { performImport() }
+                    .keyboardShortcut(.defaultAction)
+            }
+        }
+        .padding(20)
+        .frame(width: 400, height: 280)
+    }
+
+    private func performImport() {
+        do {
+            let result = try store.importRules(from: fileURL, mode: mode)
+            var parts: [String] = []
+            parts.append(String(format: NSLocalizedString("%lld rule(s) imported.", comment: ""), result.importedCount))
+            if result.skippedCount > 0 {
+                parts.append(String(format: NSLocalizedString("%lld duplicate(s) skipped.", comment: ""), result.skippedCount))
+            }
+            onDismiss(parts.joined(separator: " "))
+        } catch {
+            onDismiss(error.localizedDescription)
+        }
+    }
+}
+
+// MARK: - Identifiable URL wrapper for sheet(item:)
+
+private struct ImportFileURL: Identifiable {
+    let id = UUID()
+    let url: URL
 }
