@@ -21,17 +21,6 @@ struct BrowserPickerView: View {
     @State private var hoverTimer: Timer? = nil
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    /// Browsers that don't support incognito/private mode via CLI.
-    private static let noIncognitoBrowsers: Set<String> = [
-        "com.apple.Safari",
-        "company.thebrowser.Browser",       // Arc
-        "com.quark.desktop",                // Quark
-        "org.uc.UC",                        // UC
-        "net.qihoo.360browser",             // 360
-        "com.duckduckgo.macos.browser",     // DuckDuckGo
-        "com.kagi.kagimacOS",               // Orion
-    ]
-
     var body: some View {
         VStack(spacing: 4) {
             HStack(spacing: 8) {
@@ -101,7 +90,7 @@ struct BrowserPickerView: View {
                 hoveredBrowserId = browserId
             }
             // Start incognito timer if enabled and browser supports it
-            if incognitoHoverEnabled && !Self.noIncognitoBrowsers.contains(browserId) {
+            if incognitoHoverEnabled && BrowserManager.supportsIncognito(browserId: browserId) {
                 hoverTimer?.invalidate()
                 hoverTimer = Timer.scheduledTimer(withTimeInterval: incognitoHoverDelay, repeats: false) { _ in
                     DispatchQueue.main.async {

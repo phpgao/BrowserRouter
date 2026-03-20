@@ -129,7 +129,7 @@ struct RulesListView: View {
                                 Text(browser?.name ?? browserId)
                             } icon: {
                                 if let icon = browser?.icon {
-                                    Image(nsImage: resized(icon, to: 14))
+                                    Image(nsImage: icon.resized(to: 14))
                                 }
                             }
                             .tag(browserId)
@@ -493,7 +493,7 @@ private struct RuleRow: View {
                             .font(.system(size: 10))
                     }
                     if let icon = browserIcon {
-                        Image(nsImage: resized(icon, to: 14))
+                        Image(nsImage: icon.resized(to: 14))
                     }
                     Text(browserName)
                         .foregroundStyle(isBrowserInvalid ? .red : .secondary)

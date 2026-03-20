@@ -12,9 +12,12 @@ import SwiftUI
 /// even when the app is not active (required for LSUIElement apps).
 private class ClickThroughPanel: NSPanel {
     override var canBecomeKey: Bool { true }
+}
 
-    /// Accept first mouse — allows clicking buttons without first activating the panel
-    func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
+/// Custom NSHostingView that accepts first mouse — allows clicking buttons
+/// without first activating the panel (NSView-level override required by AppKit).
+private class ClickThroughHostingView<Content: View>: NSHostingView<Content> {
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
 }
 
 /// Transparent floating browser picker that appears at cursor position.
@@ -104,7 +107,7 @@ final class FloatingPickerWindow {
         visualEffect.layer?.masksToBounds = true
 
         // SwiftUI content on top of the vibrancy layer
-        let hostingView = NSHostingView(rootView: pickerView)
+        let hostingView = ClickThroughHostingView(rootView: pickerView)
         hostingView.setFrameSize(panelSize)
         hostingView.wantsLayer = true
         hostingView.layer?.backgroundColor = .clear

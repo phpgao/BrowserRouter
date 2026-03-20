@@ -188,7 +188,12 @@ final class BrowserManager {
 
     // MARK: - Incognito Strategy
 
-    private enum IncognitoStrategy {
+    /// Returns whether the given browser supports incognito/private mode via CLI.
+    static func supportsIncognito(browserId: String) -> Bool {
+        incognitoStrategy(for: browserId) != .unsupported
+    }
+
+    private enum IncognitoStrategy: Equatable {
         /// Chromium-based: launch binary with the given flag (e.g. --incognito, --inprivate, --private)
         case chromium(String)
         /// Firefox: use `open -a` with `-private-window`

@@ -8,8 +8,9 @@
 import Foundation
 
 /// Matches URLs against ordered wildcard rules.
-/// Pure computation — no UI or system dependencies, safe off MainActor.
-nonisolated final class URLRouter {
+/// MainActor-isolated to ensure thread-safe access to compiled rules.
+@MainActor
+final class URLRouter {
 
     private struct CompiledRule {
         let rule: BrowserRule
@@ -20,17 +21,18 @@ nonisolated final class URLRouter {
     private var compiledRules: [CompiledRule] = []
 
     init(rules: [BrowserRule]) throws {
-        compiledRules = try rules.map { rule in
-            let regex = try URLRouter.compilePattern(rule.pattern)
-            let isHostOnly = !rule.pattern.contains("/")
-            return CompiledRule(rule: rule, regex: regex, isHostOnly: isHostOnly)
-        }
+        compiledRules = try Self.compile(rules)
     }
 
     /// Updates rules (re-compiles patterns).
     func update(rules: [BrowserRule]) throws {
-        compiledRules = try rules.map { rule in
-            let regex = try URLRouter.compilePattern(rule.pattern)
+        compiledRules = try Self.compile(rules)
+    }
+
+    /// Compiles an array of rules into regex-backed CompiledRule values.
+    private static func compile(_ rules: [BrowserRule]) throws -> [CompiledRule] {
+        try rules.map { rule in
+            let regex = try compilePattern(rule.pattern)
             let isHostOnly = !rule.pattern.contains("/")
             return CompiledRule(rule: rule, regex: regex, isHostOnly: isHostOnly)
         }
@@ -61,10 +63,10 @@ nonisolated final class URLRouter {
         return nil
     }
 
-    // MARK: - Static Helpers
+    // MARK: - Static Helpers (nonisolated pure functions)
 
     /// Tests if a single pattern matches a given URL.
-    static func matches(pattern: String, url: URL) -> Bool {
+    nonisolated static func matches(pattern: String, url: URL) -> Bool {
         guard let regex = try? compilePattern(pattern) else { return false }
         let hasQuery = pattern.contains("?")
         let isHostOnly = !pattern.contains("/")
@@ -76,7 +78,7 @@ nonisolated final class URLRouter {
     }
 
     /// Strips scheme, lowercases host, optionally removes query/fragment, normalises trailing slash.
-    static func normalize(_ url: URL, keepQuery: Bool = false) -> String {
+    nonisolated static func normalize(_ url: URL, keepQuery: Bool = false) -> String {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         components?.scheme = nil
         if !keepQuery {
@@ -103,7 +105,7 @@ nonisolated final class URLRouter {
     /// Compiles a wildcard pattern to NSRegularExpression.
     /// `**` → matches any chars including / and .
     /// `*`  → matches any chars except / and .
-    static func compilePattern(_ pattern: String) throws -> NSRegularExpression {
+    nonisolated static func compilePattern(_ pattern: String) throws -> NSRegularExpression {
         // Escape all regex metacharacters except * which we handle specially
         var escaped = ""
         var i = pattern.startIndex
@@ -129,7 +131,7 @@ nonisolated final class URLRouter {
     }
 
     /// Validates a pattern string. Returns an error message string if invalid, nil if valid.
-    static func validate(_ pattern: String) -> String? {
+    nonisolated static func validate(_ pattern: String) -> String? {
         let trimmed = pattern.trimmingCharacters(in: .whitespaces)
         if trimmed.isEmpty {
             return "Pattern cannot be empty"

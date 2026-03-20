@@ -220,7 +220,7 @@ struct AddRulesSheet: View {
                             Text(browser.name)
                         } icon: {
                             if let icon = browser.icon {
-                                Image(nsImage: resized(icon, to: 16))
+                                Image(nsImage: icon.resized(to: 16))
                             }
                         }
                         .tag(browser.id)
