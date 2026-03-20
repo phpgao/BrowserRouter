@@ -87,26 +87,44 @@ After completing any feature changes, always follow this order:
 
 ## Release Workflow
 
-1. Update version in Xcode project (Marketing Version + Build Number)
-2. Commit, tag, and push:
+1. Update `MARKETING_VERSION` in `project.pbxproj` (all 4 occurrences) to the new version
+2. Commit and push to main:
    ```bash
-   git tag v1.x.x && git push origin v1.x.x
+   git add -A && git commit -m "feat: description (vX.Y.Z)"
    ```
-3. GitHub Actions will automatically:
-   - Build universal binary
-   - Sign with Sparkle EdDSA key
-   - Update appcast.xml
-   - Create GitHub Release with SHA256 in body
-4. Or manually:
+3. Tag and push:
    ```bash
-   ./package.sh
-   # Use Sparkle's sign_update to sign, then update appcast.xml
-   # Create GitHub release
+   git tag vX.Y.Z && git push origin main --tags
    ```
+4. GitHub Actions (`release.yml`) automatically:
+   - Builds universal binary via `package.sh`
+   - Build number = total git commit count (monotonically increasing)
+   - Generates release notes from git log since last tag
+   - Downloads Sparkle tools and signs the zip with EdDSA
+   - Updates `appcast.xml` with version, build number, signature, and release notes
+   - Commits `appcast.xml` back to main
+   - Creates GitHub Release with changelog and SHA256
+5. Users running BrowserRouter will see the update via Sparkle (auto-check or manual "Check for Updates…")
+
+### Manual release (without CI):
+```bash
+./package.sh
+SIGN_UPDATE=$(find ~/Library/Developer/Xcode/DerivedData -path '*/sparkle/Sparkle/bin/sign_update' -print -quit)
+$SIGN_UPDATE dist/BrowserRouter.zip
+python3 scripts/update_appcast.py --version "X.Y.Z" --build "$(git rev-list --count HEAD)" \
+  --signature "SIGNATURE" --notes "Release notes here" --file dist/BrowserRouter.zip
+```
 
 ## Update Mechanism
 
-Uses Sparkle 2.x framework. Update feed (appcast.xml) hosted in the repo,
-served via raw.githubusercontent.com. Updates are verified with EdDSA (Ed25519)
+Uses Sparkle 2.x framework. Update feed (`appcast.xml`) hosted in the repo,
+served via `raw.githubusercontent.com`. Updates are verified with EdDSA (Ed25519)
 signatures. The Sparkle private key is stored as a GitHub Secret
-(SPARKLE_PRIVATE_KEY) for CI and in the local Keychain for manual releases.
+(`SPARKLE_PRIVATE_KEY`) for CI and in the local Keychain for manual releases.
+
+Key files:
+- `appcast.xml` — Sparkle update feed (auto-updated by CI on each release)
+- `scripts/update_appcast.py` — Script to add new version entries to appcast
+- `.github/workflows/release.yml` — CI release workflow triggered by `v*` tags
+- `BrowserRouter/Info.plist` — Contains `SUFeedURL` and `SUPublicEDKey`
+- `BrowserRouter/UI/StatusBarController.swift` — Sparkle `SPUStandardUpdaterController` integration
