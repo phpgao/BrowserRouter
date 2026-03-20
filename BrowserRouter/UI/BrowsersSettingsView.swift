@@ -67,12 +67,12 @@ private struct BrowserOrderRow: View {
     var body: some View {
         HStack(spacing: 10) {
             // Checkbox
-            Button { onToggle() } label: {
-                Image(systemName: isVisible ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(isVisible ? .blue : .secondary)
-                    .font(.system(size: 18))
-            }
-            .buttonStyle(.plain)
+            Toggle("", isOn: Binding(
+                get: { isVisible },
+                set: { _ in onToggle() }
+            ))
+            .toggleStyle(.checkbox)
+            .labelsHidden()
             .accessibilityLabel(isVisible ? "Hide \(browser.name)" : "Show \(browser.name)")
 
             // Browser icon

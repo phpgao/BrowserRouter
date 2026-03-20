@@ -346,9 +346,9 @@ final class BrowserManager {
         DispatchQueue.main.async {
             let alert = NSAlert()
             alert.messageText = NSLocalizedString("Browser Not Found", comment: "")
-            alert.informativeText = String(format: NSLocalizedString("The browser \"%@\" is no longer installed. Please update your rules in Preferences.", comment: ""), browserId)
+            alert.informativeText = String(format: NSLocalizedString("The browser \"%@\" is no longer installed. Please update your rules in Settings.", comment: ""), browserId)
             alert.alertStyle = .warning
-            alert.addButton(withTitle: NSLocalizedString("Open Preferences", comment: ""))
+            alert.addButton(withTitle: NSLocalizedString("Open Settings", comment: ""))
             alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
             if alert.runModal() == .alertFirstButtonReturn {
                 NotificationCenter.default.post(name: .openPreferences, object: nil)

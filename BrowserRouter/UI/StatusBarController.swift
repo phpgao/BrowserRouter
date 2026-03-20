@@ -48,15 +48,15 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         let menu = NSMenu()
         menu.delegate = self
 
-        // Preferences
-        let prefsItem = NSMenuItem(title: NSLocalizedString("Open Preferences…", comment: ""), action: #selector(openPreferences), keyEquivalent: ",")
+        // Settings
+        let prefsItem = NSMenuItem(title: NSLocalizedString("Open Settings…", comment: ""), action: #selector(openPreferences), keyEquivalent: ",")
         prefsItem.target = self
         menu.addItem(prefsItem)
 
         menu.addItem(.separator())
 
         // Default browser
-        let isDefault = isCurrentlyDefaultBrowser()
+        let isDefault = BrowserManager.isDefaultBrowser()
         let defaultItem = NSMenuItem(title: NSLocalizedString("Default Browser", comment: ""), action: isDefault ? nil : #selector(setAsDefaultBrowser), keyEquivalent: "")
         defaultItem.target = self
         defaultItem.state = isDefault ? .on : .off
@@ -98,23 +98,13 @@ final class StatusBarController: NSObject, NSMenuDelegate {
     }
 
     @objc private func showAbout() {
-        let alert = NSAlert()
-        alert.messageText = "BrowserRouter"
-        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
-        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "1"
-        alert.informativeText = """
-        Version \(version) (\(build))
-
-        \(NSLocalizedString("A lightweight macOS app that routes URLs to different browsers based on rules.", comment: ""))
-
-        Copyright © 2026 jimmy. All rights reserved. License GPLv3.
-        """
-        alert.alertStyle = .informational
-        alert.icon = NSApp.applicationIconImage
-        alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
-
         NSApp.activate(ignoringOtherApps: true)
-        alert.runModal()
+        NSApp.orderFrontStandardAboutPanel(options: [
+            .credits: NSAttributedString(
+                string: NSLocalizedString("A lightweight macOS app that routes URLs to different browsers based on rules.", comment: ""),
+                attributes: [.font: NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)]
+            )
+        ])
     }
 
     @objc private func setAsDefaultBrowser() {
@@ -130,11 +120,5 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         settings.launchAtLogin.toggle()
         onSettingsChanged(settings)
         rebuildMenu()
-    }
-
-    // MARK: - Helpers
-
-    private func isCurrentlyDefaultBrowser() -> Bool {
-        BrowserManager.isDefaultBrowser()
     }
 }

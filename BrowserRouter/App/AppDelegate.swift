@@ -201,9 +201,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let hostingController = NSHostingController(rootView: prefsView)
 
         let window = NSWindow(contentViewController: hostingController)
-        window.title = NSLocalizedString("BrowserRouter Preferences", comment: "")
-        window.styleMask = [.titled, .closable]
+        window.title = NSLocalizedString("BrowserRouter Settings", comment: "")
+        window.styleMask = [.titled, .closable, .miniaturizable]
         window.setContentSize(UIConstants.preferencesSize)
+        window.setFrameAutosaveName("PreferencesWindow")
         window.center()
         window.makeKeyAndOrderFront(nil)
 

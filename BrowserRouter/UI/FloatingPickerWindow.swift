@@ -59,11 +59,14 @@ final class FloatingPickerWindow {
     }
 
     func show() {
+        let keyboardHandler = PickerKeyboardHandler(browserCount: browsers.count)
+
         let pickerView = BrowserPickerView(
             browsers: browsers,
             showQuickAdd: showQuickAdd,
             incognitoHoverEnabled: incognitoHoverEnabled,
             incognitoHoverDelay: incognitoHoverDelay,
+            keyboardHandler: keyboardHandler,
             onSelect: { [weak self] browserId, isIncognito in
                 self?.onSelect(browserId, isIncognito)
                 self?.dismiss()
@@ -138,10 +141,31 @@ final class FloatingPickerWindow {
 
         self.panel = panel
 
-        // Dismiss on Esc key
+        // Keyboard navigation: Esc to dismiss, arrows/numbers/Enter to navigate
         localMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
+            guard let self else { return event }
+            // Esc to dismiss
             if event.keyCode == 53 {
-                self?.dismiss()
+                self.dismiss()
+                return nil
+            }
+            // Let keyboard handler process arrows, numbers, Enter
+            let handled = keyboardHandler.handleKeyDown(event)
+            if handled {
+                // Return/Enter confirms selection
+                if (event.keyCode == 36 || event.keyCode == 76),
+                   let idx = keyboardHandler.selectedIndex, idx < self.browsers.count {
+                    let browser = self.browsers[idx]
+                    self.onSelect(browser.id, false)
+                    self.dismiss()
+                }
+                // Number key: also confirm immediately
+                if let chars = event.charactersIgnoringModifiers,
+                   let digit = Int(chars), digit >= 1, digit <= self.browsers.count {
+                    let browser = self.browsers[digit - 1]
+                    self.onSelect(browser.id, false)
+                    self.dismiss()
+                }
                 return nil
             }
             return event

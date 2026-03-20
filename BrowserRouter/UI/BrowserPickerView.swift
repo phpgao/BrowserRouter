@@ -12,6 +12,7 @@ struct BrowserPickerView: View {
     let showQuickAdd: Bool
     let incognitoHoverEnabled: Bool
     let incognitoHoverDelay: Double
+    @ObservedObject var keyboardHandler: PickerKeyboardHandler
     let onSelect: (String, Bool) -> Void  // (browserId, isIncognito)
     let onQuickAdd: () -> Void
     let onDismiss: () -> Void
@@ -20,6 +21,14 @@ struct BrowserPickerView: View {
     @State private var incognitoBrowserId: String? = nil
     @State private var hoverTimer: Timer? = nil
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    /// The effectively highlighted browser ID (keyboard or mouse hover).
+    private var highlightedBrowserId: String? {
+        if let idx = keyboardHandler.selectedIndex, idx < browsers.count {
+            return browsers[idx].id
+        }
+        return hoveredBrowserId
+    }
 
     var body: some View {
         VStack(spacing: 4) {
@@ -33,10 +42,11 @@ struct BrowserPickerView: View {
 
                 BrowserIconButton(
                     browser: browser,
-                    isHovered: hoveredBrowserId == browser.id,
+                    isHovered: highlightedBrowserId == browser.id,
                     isIncognito: incognitoBrowserId == browser.id,
                     reduceMotion: reduceMotion,
                     onHover: { hovering in
+                        keyboardHandler.selectedIndex = nil  // mouse takes over from keyboard
                         handleHover(browserId: browser.id, hovering: hovering)
                     },
                     onSelect: {
@@ -173,6 +183,9 @@ private struct BrowserIconButton: View {
             .onHover { hovering in
                 onHover(hovering)
             }
+            .accessibilityLabel(isIncognito
+                ? "Open in \(browser.name) (Incognito)"
+                : "Open in \(browser.name)")
 
             // Version below icon
             if let version = browser.version {

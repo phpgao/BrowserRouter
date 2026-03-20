@@ -234,7 +234,7 @@ struct RulesListView: View {
                             .font(.caption)
                     }
                     .buttonStyle(.plain)
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(Color.accentColor)
                 }
 
                 Text(hasActiveFilter
@@ -253,7 +253,7 @@ struct RulesListView: View {
                         .font(.caption)
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(.blue)
+                .foregroundStyle(Color.accentColor)
                 .disabled(store.rules.isEmpty)
                 .accessibilityLabel(NSLocalizedString("Export Rules", comment: ""))
 
@@ -264,7 +264,7 @@ struct RulesListView: View {
                         .font(.caption)
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(.blue)
+                .foregroundStyle(Color.accentColor)
                 .accessibilityLabel(NSLocalizedString("Import Rules", comment: ""))
 
                 if !selection.isEmpty {
