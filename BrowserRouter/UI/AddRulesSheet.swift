@@ -204,9 +204,7 @@ struct AddRulesSheet: View {
             }
 
             if let error = validationError {
-                Label(error, systemImage: "exclamationmark.triangle.fill")
-                    .foregroundStyle(.red)
-                    .font(.caption)
+                ValidationErrorLabel(message: error)
             }
 
             Divider()
@@ -214,20 +212,8 @@ struct AddRulesSheet: View {
             HStack {
                 Text("Open with")
                 Spacer()
-                Picker("", selection: $selectedBrowserId) {
-                    ForEach(store.installedBrowsers) { browser in
-                        Label {
-                            Text(browser.name)
-                        } icon: {
-                            if let icon = browser.icon {
-                                Image(nsImage: icon.resized(to: 16))
-                            }
-                        }
-                        .tag(browser.id)
-                    }
-                }
-                .pickerStyle(.menu)
-                .frame(width: 200)
+                BrowserMenuPicker(browsers: store.installedBrowsers, selectedBrowserId: $selectedBrowserId)
+                    .frame(width: 200)
             }
 
             HStack {

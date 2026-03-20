@@ -190,11 +190,7 @@ struct RulesListView: View {
                                 onToggle: { store.saveRules() },
                                 onEdit: { editingRule = rule },
                                 onDelete: {
-                                    if let idx = store.rules.firstIndex(where: { $0.id == rule.id }) {
-                                        store.rules.remove(at: idx)
-                                        store.saveRules()
-                                        if isFiltering { runMatch() }
-                                    }
+                                    deleteRule(rule)
                                 }
                             )
                             .tag(rule.id)
@@ -378,16 +374,20 @@ struct RulesListView: View {
             }
             Divider()
             Button(NSLocalizedString("Delete", comment: ""), role: .destructive) {
-                if let idx = store.rules.firstIndex(where: { $0.id == rule.id }) {
-                    store.rules.remove(at: idx)
-                    store.saveRules()
-                    if isFiltering { runMatch() }
-                }
+                deleteRule(rule)
             }
         }
     }
 
     // MARK: - Actions
+
+    private func deleteRule(_ rule: BrowserRule) {
+        if let idx = store.rules.firstIndex(where: { $0.id == rule.id }) {
+            store.rules.remove(at: idx)
+            store.saveRules()
+            if isFiltering { runMatch() }
+        }
+    }
 
     private func deleteSelected() {
         guard !selection.isEmpty else { return }

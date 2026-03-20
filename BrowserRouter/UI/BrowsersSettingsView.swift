@@ -76,20 +76,12 @@ private struct BrowserOrderRow: View {
             .accessibilityLabel(isVisible ? "Hide \(browser.name)" : "Show \(browser.name)")
 
             // Browser icon
-            if let icon = browser.icon {
-                Image(nsImage: icon)
-                    .resizable()
-                    .frame(width: UIConstants.browserIconSize, height: UIConstants.browserIconSize)
-                    .clipShape(RoundedRectangle(cornerRadius: UIConstants.browserIconCornerRadius))
-            } else {
-                RoundedRectangle(cornerRadius: UIConstants.browserIconCornerRadius)
-                    .fill(.quaternary)
-                    .frame(width: UIConstants.browserIconSize, height: UIConstants.browserIconSize)
-                    .overlay {
-                        Text(String(browser.name.prefix(1)))
-                            .font(.headline)
-                    }
-            }
+            BrowserIconView(
+                icon: browser.icon,
+                name: browser.name,
+                size: UIConstants.browserIconSize,
+                cornerRadius: UIConstants.browserIconCornerRadius
+            )
 
             // Name and version
             VStack(alignment: .leading, spacing: 2) {

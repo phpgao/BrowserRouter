@@ -148,22 +148,12 @@ private struct BrowserIconButton: View {
             Button {
                 onSelect()
             } label: {
-                Group {
-                    if let icon = browser.icon {
-                        Image(nsImage: icon)
-                            .resizable()
-                            .frame(width: UIConstants.pickerIconSize, height: UIConstants.pickerIconSize)
-                            .clipShape(RoundedRectangle(cornerRadius: 13))
-                    } else {
-                        RoundedRectangle(cornerRadius: 13)
-                            .fill(.quaternary)
-                            .frame(width: UIConstants.pickerIconSize, height: UIConstants.pickerIconSize)
-                            .overlay {
-                                Text(String(browser.name.prefix(1)))
-                                    .font(.title2)
-                            }
-                    }
-                }
+                BrowserIconView(
+                    icon: browser.icon,
+                    name: browser.name,
+                    size: UIConstants.pickerIconSize,
+                    cornerRadius: 13
+                )
                 .overlay {
                     if isIncognito {
                         RoundedRectangle(cornerRadius: 13)

@@ -89,8 +89,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         switch action {
         case .openBrowser(let browserId):
-            browserManager.open(url: url, browserId: browserId)
-            ruleStore.recordClick(browserId: browserId)
+            openAndRecord(url: url, browserId: browserId, isIncognito: false)
         case .showPicker:
             showPicker(for: url)
         case .showWarning(let rule):
@@ -101,39 +100,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func showPicker(for url: URL) {
-        let cursorPosition = NSEvent.mouseLocation
-        let browsers = store.visibleBrowsers
-        let showQuickAdd = settings.showQuickAddButton
-
-        pickerWindow = FloatingPickerWindow(
-            browsers: browsers,
-            atPosition: cursorPosition,
-            showQuickAdd: showQuickAdd,
-            incognitoHoverEnabled: settings.incognitoHoverEnabled,
-            incognitoHoverDelay: settings.incognitoHoverDelay,
-            onSelect: { [weak self] browserId, isIncognito in
-                if isIncognito {
-                    self?.browserManager.openIncognito(url: url, browserId: browserId)
-                } else {
-                    self?.browserManager.open(url: url, browserId: browserId)
-                }
-                self?.ruleStore.recordClick(browserId: browserId)
-            },
-            onQuickAdd: { [weak self] in
-                self?.pickerWindow?.showQuickAddSheet(for: url)
-            },
-            onRuleSaved: { [weak self] pattern, browserId in
-                guard let self else { return }
-                var rules = (try? self.ruleStore.loadRules()) ?? []
-                rules.append(BrowserRule(pattern: pattern, browserId: browserId))
-                try? self.ruleStore.save(rules: rules)
-                self.reloadSettings()
-                // Open the URL with the browser the user just chose for this rule
-                self.browserManager.open(url: url, browserId: browserId)
-                self.ruleStore.recordClick(browserId: browserId)
-            }
-        )
-        pickerWindow?.show()
+        showPicker(for: url, updatingRule: nil)
     }
 
     // MARK: - Browser Missing Alert
@@ -155,43 +122,58 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
         let response = alert.runModal()
         if response == .alertFirstButtonReturn {
-            showPickerAndUpdateRule(for: url, rule: rule)
+            showPicker(for: url, updatingRule: rule)
         }
     }
 
-    /// Shows the browser picker; when the user selects a browser, also updates the rule's browserId.
-    private func showPickerAndUpdateRule(for url: URL, rule: BrowserRule) {
+    /// Shows the browser picker. If `updatingRule` is provided, the selected browser also updates that rule.
+    private func showPicker(for url: URL, updatingRule: BrowserRule?) {
         let cursorPosition = NSEvent.mouseLocation
         let browsers = store.visibleBrowsers
+        let showQuickAdd = updatingRule == nil && settings.showQuickAddButton
 
         pickerWindow = FloatingPickerWindow(
             browsers: browsers,
             atPosition: cursorPosition,
-            showQuickAdd: false,
+            showQuickAdd: showQuickAdd,
             incognitoHoverEnabled: settings.incognitoHoverEnabled,
             incognitoHoverDelay: settings.incognitoHoverDelay,
             onSelect: { [weak self] browserId, isIncognito in
                 guard let self else { return }
-                // Open the URL
-                if isIncognito {
-                    self.browserManager.openIncognito(url: url, browserId: browserId)
-                } else {
-                    self.browserManager.open(url: url, browserId: browserId)
-                }
-                self.ruleStore.recordClick(browserId: browserId)
+                self.openAndRecord(url: url, browserId: browserId, isIncognito: isIncognito)
 
-                // Update the rule's browser
-                if var rules = try? self.ruleStore.loadRules(),
+                // Update the rule's browser if needed
+                if let rule = updatingRule,
+                   var rules = try? self.ruleStore.loadRules(),
                    let idx = rules.firstIndex(where: { $0.id == rule.id }) {
                     rules[idx].browserId = browserId
                     try? self.ruleStore.save(rules: rules)
                     self.reloadSettings()
                 }
             },
-            onQuickAdd: {},
-            onRuleSaved: nil
+            onQuickAdd: { [weak self] in
+                self?.pickerWindow?.showQuickAddSheet(for: url)
+            },
+            onRuleSaved: updatingRule == nil ? { [weak self] pattern, browserId in
+                guard let self else { return }
+                var rules = (try? self.ruleStore.loadRules()) ?? []
+                rules.append(BrowserRule(pattern: pattern, browserId: browserId))
+                try? self.ruleStore.save(rules: rules)
+                self.reloadSettings()
+                self.openAndRecord(url: url, browserId: browserId, isIncognito: false)
+            } : nil
         )
         pickerWindow?.show()
+    }
+
+    /// Opens a URL in the specified browser and records the click.
+    private func openAndRecord(url: URL, browserId: String, isIncognito: Bool) {
+        if isIncognito {
+            browserManager.openIncognito(url: url, browserId: browserId)
+        } else {
+            browserManager.open(url: url, browserId: browserId)
+        }
+        ruleStore.recordClick(browserId: browserId)
     }
 
     // MARK: - Settings Reload

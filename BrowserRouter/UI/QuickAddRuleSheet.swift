@@ -39,9 +39,7 @@ struct QuickAddRuleSheet: View {
             }
 
             if let error = validationError {
-                Label(error, systemImage: "exclamationmark.triangle.fill")
-                    .foregroundStyle(.red)
-                    .font(.caption)
+                ValidationErrorLabel(message: error)
             }
 
             Picker("Open with", selection: $selectedBrowserId) {
