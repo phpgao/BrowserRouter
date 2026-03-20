@@ -12,8 +12,10 @@ import Foundation
 private nonisolated(unsafe) let patternRegexCache = NSCache<NSString, NSRegularExpression>()
 
 /// Matches URLs against ordered wildcard rules.
-/// Thread-safe via internal locking — safe to use from any thread.
-final class URLRouter: @unchecked Sendable {
+/// Pure computation — no UI or system dependencies.
+/// All mutation (init, update) happens on the main thread via AppDelegate;
+/// read-only matching is safe from any context.
+nonisolated final class URLRouter {
 
     private struct CompiledRule {
         let rule: BrowserRule
@@ -22,7 +24,6 @@ final class URLRouter: @unchecked Sendable {
     }
 
     private var compiledRules: [CompiledRule] = []
-    private let lock = NSLock()
 
     init(rules: [BrowserRule]) throws {
         compiledRules = try Self.compile(rules)
@@ -30,10 +31,7 @@ final class URLRouter: @unchecked Sendable {
 
     /// Updates rules (re-compiles patterns).
     func update(rules: [BrowserRule]) throws {
-        let newRules = try Self.compile(rules)
-        lock.lock()
-        compiledRules = newRules
-        lock.unlock()
+        compiledRules = try Self.compile(rules)
     }
 
     /// Compiles an array of rules into regex-backed CompiledRule values.
@@ -47,15 +45,11 @@ final class URLRouter: @unchecked Sendable {
 
     /// Returns the first enabled matching rule, or nil.
     func match(_ url: URL) -> BrowserRule? {
-        lock.lock()
-        let rules = compiledRules
-        lock.unlock()
-
         let normalizedFull = URLRouter.normalize(url, keepQuery: true)
         let normalizedNoQuery = URLRouter.normalize(url, keepQuery: false)
         let hostFull = String(normalizedNoQuery.split(separator: "/", maxSplits: 1).first ?? Substring(normalizedNoQuery))
 
-        for compiled in rules {
+        for compiled in compiledRules {
             guard compiled.rule.isEnabled else { continue }
             let hasQuery = compiled.rule.pattern.contains("?")
             let target: String
