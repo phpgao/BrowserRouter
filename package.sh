@@ -1,6 +1,6 @@
 #!/bin/bash
 # Build and package BrowserRouter for distribution
-set -euo pipefail
+set -eo pipefail
 
 SCHEME="BrowserRouter"
 DERIVED_DATA="$(mktemp -d)"
@@ -24,13 +24,6 @@ xcodebuild -scheme "$SCHEME" -configuration Release \
     CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
     build 2>&1 | tail -5
 
-# Check build result
-if [ ${PIPESTATUS[0]} -ne 0 ] 2>/dev/null; then
-    echo "❌ Build failed"
-    rm -rf "$DERIVED_DATA"
-    exit 1
-fi
-
 APP_PATH="${DERIVED_DATA}/Build/Products/Release/${SCHEME}.app"
 
 if [ ! -d "$APP_PATH" ]; then
@@ -51,13 +44,13 @@ mkdir -p "$OUTPUT_DIR"
 ZIP_PATH="${OUTPUT_DIR}/${SCHEME}.zip"
 ditto -ck --keepParent "$APP_PATH" "$ZIP_PATH"
 
-# Cleanup
+# Cleanup build artifacts
 rm -rf "$DERIVED_DATA"
 
 SIZE=$(du -h "$ZIP_PATH" | cut -f1)
 
 # Sign update with Sparkle's sign_update tool (if available)
-SPARKLE_SIGN="$(find ~/Library/Developer/Xcode/DerivedData -path '*/SourcePackages/artifacts/sparkle/Sparkle/bin/sign_update' -print -quit 2>/dev/null)"
+SPARKLE_SIGN="$(find "${HOME}/Library/Developer/Xcode/DerivedData" -path '*/SourcePackages/artifacts/sparkle/Sparkle/bin/sign_update' -print -quit 2>/dev/null || true)"
 if [ -n "$SPARKLE_SIGN" ] && [ -x "$SPARKLE_SIGN" ]; then
     echo "🔏 Signing update with Sparkle..."
     SIGNATURE=$("$SPARKLE_SIGN" "$ZIP_PATH" 2>&1) || true
