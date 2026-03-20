@@ -6,13 +6,8 @@ SCHEME="BrowserRouter"
 DERIVED_DATA="$(mktemp -d)"
 OUTPUT_DIR="$(pwd)/dist"
 
-# Calculate build number: commits since last tag + 1
-LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-if [ -n "$LAST_TAG" ]; then
-    BUILD_NUMBER=$(( $(git rev-list --count "${LAST_TAG}..HEAD") + 1 ))
-else
-    BUILD_NUMBER=$(git rev-list --count HEAD)
-fi
+# Calculate build number: total commit count (monotonically increasing)
+BUILD_NUMBER=$(git rev-list --count HEAD)
 echo "🔢 Build number: ${BUILD_NUMBER}"
 
 echo "🔨 Building ${SCHEME} (Release)..."

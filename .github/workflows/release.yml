@@ -38,8 +38,10 @@ jobs:
       - name: Update appcast.xml
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
+          BUILD_NUMBER=$(git rev-list --count HEAD)
           python3 scripts/update_appcast.py \
             --version "$VERSION" \
+            --build "$BUILD_NUMBER" \
             --signature "$SPARKLE_SIGNATURE" \
             --file dist/BrowserRouter.zip
 
