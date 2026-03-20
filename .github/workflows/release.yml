@@ -17,6 +17,21 @@ jobs:
       - name: Build universal binary
         run: ./package.sh
 
+      - name: Generate release notes
+        run: |
+          # Find previous tag to generate changelog
+          PREV_TAG=$(git tag --sort=-version:refname | grep -E '^v' | sed -n '2p' || true)
+          if [ -n "$PREV_TAG" ]; then
+            # Extract commit subjects since last tag (skip merge commits)
+            NOTES=$(git log --pretty=format:"%s" --no-merges "${PREV_TAG}..HEAD" | grep -v "^Update appcast.xml" || true)
+          else
+            NOTES=$(git log --pretty=format:"%s" --no-merges -10 | grep -v "^Update appcast.xml" || true)
+          fi
+          # Save to file for multi-line handling
+          echo "$NOTES" > /tmp/release_notes.txt
+          echo "Release notes:"
+          cat /tmp/release_notes.txt
+
       - name: Download Sparkle tools
         run: |
           SPARKLE_VERSION="2.9.0"
@@ -43,6 +58,7 @@ jobs:
             --version "$VERSION" \
             --build "$BUILD_NUMBER" \
             --signature "$SPARKLE_SIGNATURE" \
+            --notes "$(cat /tmp/release_notes.txt)" \
             --file dist/BrowserRouter.zip
 
       - name: Commit updated appcast.xml
@@ -59,6 +75,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           SHA256=$(shasum -a 256 dist/BrowserRouter.zip | awk '{print $1}')
+          # Build markdown release notes
+          NOTES=$(cat /tmp/release_notes.txt)
+          BODY=$(cat <<EOF
+          ## What's Changed
+          $(echo "$NOTES" | sed 's/^/- /')
+
+          ---
+          SHA256: \`${SHA256}\`
+          EOF
+          )
           gh release create "$GITHUB_REF_NAME" dist/BrowserRouter.zip \
             --title "$GITHUB_REF_NAME" \
-            --notes "SHA256: \`${SHA256}\`"
+            --notes "$BODY"
