@@ -1,6 +1,6 @@
 #!/bin/bash
 # BrowserRouter Installer
-# Usage: curl -fsSL https://raw.githubusercontent.com/user/BrowserRouter/main/install.sh | bash
+# Usage: curl -fsSL https://raw.githubusercontent.com/phpgao/BrowserRouter/main/install.sh | bash
 
 set -e
 

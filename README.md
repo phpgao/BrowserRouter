@@ -42,14 +42,12 @@ Safari, Google Chrome, Chrome Canary, Chromium, Firefox, Microsoft Edge, Arc, Br
 ### Option 1: One-line install (recommended)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/user/BrowserRouter/main/install.sh | bash -s -- "DOWNLOAD_URL"
+curl -fsSL https://raw.githubusercontent.com/phpgao/BrowserRouter/main/install.sh | bash -s -- "https://github.com/phpgao/BrowserRouter/releases/latest/download/BrowserRouter.zip"
 ```
-
-Replace `DOWNLOAD_URL` with the actual release zip URL.
 
 ### Option 2: Manual install
 
-1. Download `BrowserRouter.zip` from [Releases](https://github.com/user/BrowserRouter/releases)
+1. Download `BrowserRouter.zip` from [Releases](https://github.com/phpgao/BrowserRouter/releases)
 2. Unzip and drag `BrowserRouter.app` to `/Applications`
 3. Remove quarantine attribute (required for unsigned apps):
    ```bash
@@ -67,7 +65,7 @@ Replace `DOWNLOAD_URL` with the actual release zip URL.
 Requires Xcode 15+ and macOS 14+.
 
 ```bash
-git clone https://github.com/user/BrowserRouter.git
+git clone https://github.com/phpgao/BrowserRouter.git
 cd BrowserRouter
 xcodebuild -scheme BrowserRouter -configuration Release build CONFIGURATION_BUILD_DIR=/Applications
 ```

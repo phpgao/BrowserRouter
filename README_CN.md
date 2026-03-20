@@ -40,14 +40,12 @@ Safari、Google Chrome、Chrome Canary、Chromium、Firefox、Microsoft Edge、A
 ### 方式一：一行命令安装（推荐）
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/user/BrowserRouter/main/install.sh | bash -s -- "下载链接"
+curl -fsSL https://raw.githubusercontent.com/phpgao/BrowserRouter/main/install.sh | bash -s -- "https://github.com/phpgao/BrowserRouter/releases/latest/download/BrowserRouter.zip"
 ```
-
-将 `下载链接` 替换为实际的 Release zip 地址。
 
 ### 方式二：手动安装
 
-1. 从 [Releases](https://github.com/user/BrowserRouter/releases) 下载 `BrowserRouter.zip`
+1. 从 [Releases](https://github.com/phpgao/BrowserRouter/releases) 下载 `BrowserRouter.zip`
 2. 解压后将 `BrowserRouter.app` 拖入 `/Applications`
 3. 移除隔离属性（未签名应用需要此步骤）：
    ```bash
@@ -65,7 +63,7 @@ curl -fsSL https://raw.githubusercontent.com/user/BrowserRouter/main/install.sh 
 需要 Xcode 15+ 和 macOS 14+。
 
 ```bash
-git clone https://github.com/user/BrowserRouter.git
+git clone https://github.com/phpgao/BrowserRouter.git
 cd BrowserRouter
 xcodebuild -scheme BrowserRouter -configuration Release build CONFIGURATION_BUILD_DIR=/Applications
 ```
