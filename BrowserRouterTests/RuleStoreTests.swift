@@ -128,7 +128,8 @@ final class RuleStoreTests: XCTestCase {
             browserOrder: [BrowserOrderItem(browserId: "com.apple.Safari", isVisible: false)],
             incognitoHoverEnabled: false,
             incognitoHoverDelay: 2.5,
-            language: "zh-Hans"
+            language: "zh-Hans",
+            autoCheckUpdates: false
         )
         store.save(settings: settings)
         let loaded = store.loadSettings()
@@ -140,5 +141,6 @@ final class RuleStoreTests: XCTestCase {
         XCTAssertFalse(loaded.incognitoHoverEnabled)
         XCTAssertEqual(loaded.incognitoHoverDelay, 2.5)
         XCTAssertEqual(loaded.language, "zh-Hans")
+        XCTAssertFalse(loaded.autoCheckUpdates)
     }
 }

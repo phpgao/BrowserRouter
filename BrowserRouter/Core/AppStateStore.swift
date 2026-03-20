@@ -7,6 +7,9 @@
 
 import SwiftUI
 import Combine
+import os.log
+
+private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "BrowserRouter", category: "AppStateStore")
 
 /// Observable bridge between SwiftUI and the persistence layer.
 @MainActor
@@ -47,7 +50,12 @@ final class AppStateStore: ObservableObject {
     }
 
     func load() {
-        rules = (try? ruleStore.loadRules()) ?? []
+        do {
+            rules = try ruleStore.loadRules()
+        } catch {
+            logger.error("Failed to load rules: \(error.localizedDescription)")
+            rules = []
+        }
         settings = ruleStore.loadSettings()
         installedBrowsers = browserManager.installedBrowsers
         clickStats = ruleStore.loadClickStats()
@@ -71,7 +79,11 @@ final class AppStateStore: ObservableObject {
     }
 
     func saveRules() {
-        try? ruleStore.save(rules: rules)
+        do {
+            try ruleStore.save(rules: rules)
+        } catch {
+            logger.error("Failed to save rules: \(error.localizedDescription)")
+        }
         NotificationCenter.default.post(name: .settingsDidChange, object: nil)
     }
 

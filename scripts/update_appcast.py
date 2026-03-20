@@ -38,6 +38,7 @@ def main():
     parser.add_argument("--file", required=True, help="Path to the .zip file")
     parser.add_argument("--notes", default="", help="Release notes (plain text, one item per line)")
     parser.add_argument("--appcast", default="appcast.xml", help="Path to appcast.xml")
+    parser.add_argument("--max-entries", type=int, default=5, help="Maximum number of entries to keep")
     args = parser.parse_args()
 
     file_size = os.path.getsize(args.file)
@@ -88,6 +89,13 @@ def main():
     enclosure.set("type", "application/octet-stream")
     enclosure.set(f"{{{sparkle_ns}}}edSignature", signature)
     enclosure.set("length", str(file_size))
+
+    # Trim old entries, keep only the most recent N items
+    items = channel.findall("item")
+    max_entries = args.max_entries
+    if len(items) > max_entries:
+        for old_item in items[:-max_entries]:
+            channel.remove(old_item)
 
     ET.indent(tree, space="    ")
     tree.write(args.appcast, encoding="utf-8", xml_declaration=True)

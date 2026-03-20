@@ -8,6 +8,9 @@
 import AppKit
 import SwiftUI
 import ServiceManagement
+import os.log
+
+private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "BrowserRouter", category: "AppDelegate")
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -38,7 +41,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         let rules = store.rules
-        urlRouter = try? URLRouter(rules: rules)
+        do {
+            urlRouter = try URLRouter(rules: rules)
+        } catch {
+            logger.error("Failed to compile URL rules: \(error.localizedDescription)")
+        }
 
         // Sync launch-at-login state
         syncLaunchAtLogin()
@@ -143,13 +150,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 guard let self else { return }
                 self.openAndRecord(url: url, browserId: browserId, isIncognito: isIncognito)
 
-                // Update the rule's browser if needed
-                if let rule = updatingRule,
-                   var rules = try? self.ruleStore.loadRules(),
-                   let idx = rules.firstIndex(where: { $0.id == rule.id }) {
-                    rules[idx].browserId = browserId
-                    try? self.ruleStore.save(rules: rules)
-                    self.reloadSettings()
+                if let rule = updatingRule {
+                    do {
+                        var rules = try self.ruleStore.loadRules()
+                        if let idx = rules.firstIndex(where: { $0.id == rule.id }) {
+                            rules[idx].browserId = browserId
+                            try self.ruleStore.save(rules: rules)
+                            self.reloadSettings()
+                        }
+                    } catch {
+                        logger.error("Failed to update rule browser: \(error.localizedDescription)")
+                    }
                 }
             },
             onQuickAdd: { [weak self] in
@@ -157,10 +168,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             },
             onRuleSaved: updatingRule == nil ? { [weak self] pattern, browserId in
                 guard let self else { return }
-                var rules = (try? self.ruleStore.loadRules()) ?? []
-                rules.append(BrowserRule(pattern: pattern, browserId: browserId))
-                try? self.ruleStore.save(rules: rules)
-                self.reloadSettings()
+                do {
+                    var rules = try self.ruleStore.loadRules()
+                    rules.append(BrowserRule(pattern: pattern, browserId: browserId))
+                    try self.ruleStore.save(rules: rules)
+                    self.reloadSettings()
+                } catch {
+                    logger.error("Failed to save quick-add rule: \(error.localizedDescription)")
+                }
                 self.openAndRecord(url: url, browserId: browserId, isIncognito: false)
             } : nil
         )
@@ -181,7 +196,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func reloadSettings() {
         store.load()  // single source: loads rules, settings, browsers, clickStats
-        try? urlRouter?.update(rules: store.rules)
+        do {
+            try urlRouter?.update(rules: store.rules)
+        } catch {
+            logger.error("Failed to recompile URL rules: \(error.localizedDescription)")
+        }
         syncLaunchAtLogin()
         statusBarController.update(settings: settings)
     }

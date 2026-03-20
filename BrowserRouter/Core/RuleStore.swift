@@ -8,6 +8,8 @@
 import Foundation
 
 /// Persists BrowserRule list (JSON file) and AppSettings (UserDefaults).
+/// In practice, all callers are on MainActor (AppDelegate, AppStateStore).
+/// Not annotated @MainActor to allow testability from XCTestCase setUp/tearDown.
 final class RuleStore {
 
     private let rulesFileURL: URL

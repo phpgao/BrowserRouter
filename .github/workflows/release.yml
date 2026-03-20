@@ -44,9 +44,11 @@ jobs:
         env:
           SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
         run: |
-          echo "$SPARKLE_PRIVATE_KEY" > /tmp/sparkle_key
-          SIGNATURE=$("$SIGN_UPDATE" -f /tmp/sparkle_key dist/BrowserRouter.zip)
-          rm -f /tmp/sparkle_key
+          KEY_FILE=$(mktemp)
+          chmod 600 "$KEY_FILE"
+          echo "$SPARKLE_PRIVATE_KEY" > "$KEY_FILE"
+          SIGNATURE=$("$SIGN_UPDATE" -f "$KEY_FILE" dist/BrowserRouter.zip)
+          rm -f "$KEY_FILE"
           echo "SPARKLE_SIGNATURE=$SIGNATURE" >> "$GITHUB_ENV"
           echo "Signed successfully"
 

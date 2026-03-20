@@ -165,8 +165,8 @@ final class URLRouterTests: XCTestCase {
         // Dot should be literal, not regex "any character"
         let regex = try! URLRouter.compilePattern("example.com")
         XCTAssertTrue(regex.matches("example.com"))
-        // "exampleXcom" should NOT match if dot were treated as wildcard
-        // but since dot is not in the escaped set, it matches literally via the pattern
+        // Dot is escaped, so "exampleXcom" should NOT match
+        XCTAssertFalse(regex.matches("exampleXcom"))
     }
 
     func test_compile_questionMarkInPattern() {

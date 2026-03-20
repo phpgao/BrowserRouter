@@ -13,9 +13,10 @@ private nonisolated(unsafe) let patternRegexCache = NSCache<NSString, NSRegularE
 
 /// Matches URLs against ordered wildcard rules.
 /// Pure computation — no UI or system dependencies.
-/// All mutation (init, update) happens on the main thread via AppDelegate;
-/// read-only matching is safe from any context.
-final class URLRouter: @unchecked Sendable {
+/// All mutation (init, update) and matching happens on MainActor
+/// (called from AppDelegate). Static helpers remain nonisolated.
+@MainActor
+final class URLRouter {
 
     private struct CompiledRule {
         let rule: BrowserRule
@@ -134,7 +135,7 @@ final class URLRouter: @unchecked Sendable {
                 } else {
                     escaped += "[^/.]+"  // * = one or more non-slash non-dot
                 }
-            } else if "^$+?{}()|\\[]".contains(c) {
+            } else if ".^$+?{}()|\\[]".contains(c) {
                 escaped += "\\\(c)"
             } else {
                 escaped += String(c)
