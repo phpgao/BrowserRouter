@@ -44,7 +44,7 @@ struct AddRulesSheet: View {
                 TextField("*.example.com", text: $patternsText)
                     .font(.system(.body, design: .monospaced))
                     .textFieldStyle(.roundedBorder)
-                    .onChange(of: patternsText) { validatePatterns() }
+                    .onChange(of: patternsText) { _ in validatePatterns() }
             } else {
                 Text("URL Patterns (one per line)")
                     .font(.subheadline)
@@ -54,7 +54,7 @@ struct AddRulesSheet: View {
                     .font(.system(.body, design: .monospaced))
                     .frame(minHeight: 120)
                     .border(Color(.separatorColor))
-                    .onChange(of: patternsText) { validatePatterns() }
+                    .onChange(of: patternsText) { _ in validatePatterns() }
             }
 
             HStack(spacing: 4) {

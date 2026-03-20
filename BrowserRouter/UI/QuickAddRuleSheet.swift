@@ -29,7 +29,7 @@ struct QuickAddRuleSheet: View {
                 TextField("Pattern", text: $pattern)
                     .textFieldStyle(.roundedBorder)
                     .font(.system(.body, design: .monospaced))
-                    .onChange(of: pattern) {
+                    .onChange(of: pattern) { _ in
                         if let error = URLRouter.validate(pattern) {
                             validationError = error
                         } else {

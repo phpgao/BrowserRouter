@@ -473,7 +473,7 @@ private struct RuleRow: View {
             Toggle("", isOn: $rule.isEnabled)
                 .toggleStyle(.checkbox)
                 .labelsHidden()
-                .onChange(of: rule.isEnabled) { onToggle() }
+                .onChange(of: rule.isEnabled) { _ in onToggle() }
 
             if isHighlighted {
                 Image(systemName: "checkmark.circle.fill")

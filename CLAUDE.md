@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-BrowserRouter is a macOS app (SwiftUI, minimum macOS 15, Swift 6 language mode) that acts as the system default browser and routes URLs to different browsers based on user-defined wildcard pattern rules. Zero external dependencies — pure native implementation.
+BrowserRouter is a macOS app (SwiftUI, minimum macOS 13, Swift 6 language mode) that acts as the system default browser and routes URLs to different browsers based on user-defined wildcard pattern rules. Zero external dependencies — pure native implementation.
 
 ## Build & Test Commands
 

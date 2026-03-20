@@ -25,7 +25,7 @@ struct GeneralSettingsView: View {
                 }
 
                 Toggle("Launch at Login", isOn: $store.settings.launchAtLogin)
-                    .onChange(of: store.settings.launchAtLogin) {
+                    .onChange(of: store.settings.launchAtLogin) { _ in
                         store.saveSettings()
                     }
 
@@ -78,7 +78,7 @@ struct GeneralSettingsView: View {
 
                     if case .showPicker = store.settings.defaultBehavior {
                         Toggle("Show quick-add rule button in picker", isOn: $store.settings.showQuickAddButton)
-                            .onChange(of: store.settings.showQuickAddButton) {
+                            .onChange(of: store.settings.showQuickAddButton) { _ in
                                 store.saveSettings()
                             }
                             .padding(.top, 4)
@@ -89,7 +89,7 @@ struct GeneralSettingsView: View {
             // Incognito Hover Section
             Section("Incognito Mode") {
                 Toggle("Enable hover-to-incognito in browser picker", isOn: $store.settings.incognitoHoverEnabled)
-                    .onChange(of: store.settings.incognitoHoverEnabled) {
+                    .onChange(of: store.settings.incognitoHoverEnabled) { _ in
                         store.saveSettings()
                     }
 
@@ -97,7 +97,7 @@ struct GeneralSettingsView: View {
                     HStack {
                         Text("Hover delay:")
                         Slider(value: $store.settings.incognitoHoverDelay, in: 0.3...3.0, step: 0.1)
-                            .onChange(of: store.settings.incognitoHoverDelay) {
+                            .onChange(of: store.settings.incognitoHoverDelay) { _ in
                                 store.saveSettings()
                             }
                         Text(String(format: "%.1fs", store.settings.incognitoHoverDelay))

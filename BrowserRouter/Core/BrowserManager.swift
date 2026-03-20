@@ -6,7 +6,6 @@
 //
 
 import AppKit
-import Synchronization
 
 /// Detects installed browsers and launches URLs in a specific browser.
 final class BrowserManager {
@@ -88,7 +87,7 @@ final class BrowserManager {
             source.setEventHandler { [weak self] in
                 // Delay slightly to let the install/uninstall finish
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    MainActor.assumeIsolated {
+                    Task { @MainActor in
                         self?.handleApplicationsChanged()
                     }
                 }
@@ -106,7 +105,7 @@ final class BrowserManager {
             forName: NSWorkspace.didLaunchApplicationNotification,
             object: nil, queue: .main
         ) { [weak self] _ in
-            MainActor.assumeIsolated {
+            Task { @MainActor in
                 self?.handleApplicationsChanged()
             }
         }
@@ -114,7 +113,7 @@ final class BrowserManager {
             forName: NSWorkspace.didTerminateApplicationNotification,
             object: nil, queue: .main
         ) { [weak self] _ in
-            MainActor.assumeIsolated {
+            Task { @MainActor in
                 self?.handleApplicationsChanged()
             }
         }
@@ -302,22 +301,27 @@ final class BrowserManager {
             DispatchQueue.main.async { completion(false) }
             return
         }
-        let errors = Mutex((http: nil as Error?, https: nil as Error?))
+        let lock = NSLock()
+        var httpError: Error?
+        var httpsError: Error?
         let group = DispatchGroup()
 
         group.enter()
         NSWorkspace.shared.setDefaultApplication(at: appURL, toOpenURLsWithScheme: "http") { error in
-            errors.withLock { $0.http = error }
+            lock.lock()
+            httpError = error
+            lock.unlock()
             group.leave()
         }
         group.enter()
         NSWorkspace.shared.setDefaultApplication(at: appURL, toOpenURLsWithScheme: "https") { error in
-            errors.withLock { $0.https = error }
+            lock.lock()
+            httpsError = error
+            lock.unlock()
             group.leave()
         }
         group.notify(queue: .main) {
-            let result = errors.withLock { $0 }
-            completion(result.http == nil && result.https == nil)
+            completion(httpError == nil && httpsError == nil)
         }
     }
 
