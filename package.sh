@@ -6,12 +6,22 @@ SCHEME="BrowserRouter"
 DERIVED_DATA="$(mktemp -d)"
 OUTPUT_DIR="$(pwd)/dist"
 
+# Calculate build number: commits since last tag + 1
+LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+if [ -n "$LAST_TAG" ]; then
+    BUILD_NUMBER=$(( $(git rev-list --count "${LAST_TAG}..HEAD") + 1 ))
+else
+    BUILD_NUMBER=$(git rev-list --count HEAD)
+fi
+echo "🔢 Build number: ${BUILD_NUMBER}"
+
 echo "🔨 Building ${SCHEME} (Release)..."
 xcodebuild -scheme "$SCHEME" -configuration Release \
     -destination 'generic/platform=macOS' \
     -derivedDataPath "$DERIVED_DATA" \
     ARCHS="arm64 x86_64" \
     ONLY_ACTIVE_ARCH=NO \
+    CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
     build 2>&1 | tail -5
 
 # Check build result
@@ -47,7 +57,7 @@ rm -rf "$DERIVED_DATA"
 SIZE=$(du -h "$ZIP_PATH" | cut -f1)
 echo ""
 echo "✅ Done!"
-echo "   Version: ${VERSION}"
+echo "   Version: ${VERSION} (${BUILD_NUMBER})"
 echo "   Output:  ${ZIP_PATH}"
 echo "   Size:    ${SIZE}"
 echo ""
