@@ -99,13 +99,22 @@ final class StatusBarController: NSObject, NSMenuDelegate {
     }
 
     @objc private func showAbout() {
+        let alert = NSAlert()
+        alert.messageText = "BrowserRouter"
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "1"
+        alert.informativeText = """
+        Version \(version) (\(build))
+
+        \(NSLocalizedString("A lightweight macOS app that routes URLs to different browsers based on rules.", comment: ""))
+
+        Copyright © 2026 jimmy. All rights reserved. License GPLv3.
+        """
+        if let appIcon = NSImage(named: NSImage.applicationIconName) {
+            alert.icon = appIcon
+        }
         NSApp.activate(ignoringOtherApps: true)
-        NSApp.orderFrontStandardAboutPanel(options: [
-            .credits: NSAttributedString(
-                string: NSLocalizedString("A lightweight macOS app that routes URLs to different browsers based on rules.", comment: ""),
-                attributes: [.font: NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)]
-            )
-        ])
+        alert.runModal()
     }
 
     @objc private func setAsDefaultBrowser() {
