@@ -8,24 +8,28 @@
 import XCTest
 @testable import BrowserRouter
 
+@MainActor
 final class RuleStoreTests: XCTestCase {
 
     var store: RuleStore!
     var tempURL: URL!
-    var testDefaults: UserDefaults!
+    private var defaultsSuiteName: String!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         tempURL = FileManager.default.temporaryDirectory
             .appendingPathComponent("test-rules-\(UUID().uuidString).json")
-        testDefaults = UserDefaults(suiteName: "com.jimmy.BrowserRouterTests.\(UUID().uuidString)")!
-        store = RuleStore(rulesFileURL: tempURL, defaults: testDefaults)
+        defaultsSuiteName = "com.jimmy.BrowserRouterTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuiteName)!
+        store = RuleStore(rulesFileURL: tempURL, defaults: defaults)
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         try? FileManager.default.removeItem(at: tempURL)
-        testDefaults.removePersistentDomain(forName: testDefaults.description)
-        super.tearDown()
+        if let name = defaultsSuiteName {
+            UserDefaults.standard.removePersistentDomain(forName: name)
+        }
+        try await super.tearDown()
     }
 
     func test_saveAndLoad_rulesRoundTrip() throws {
@@ -70,5 +74,72 @@ final class RuleStoreTests: XCTestCase {
         let loaded = store.loadSettings()
         XCTAssertEqual(loaded.defaultBehavior, .openInBrowser("com.google.Chrome"))
         XCTAssertTrue(loaded.launchAtLogin)
+    }
+
+    // MARK: - Click Stats
+
+    func test_clickStats_initiallyEmpty() {
+        let stats = store.loadClickStats()
+        XCTAssertTrue(stats.isEmpty)
+    }
+
+    func test_recordClick_incrementsCount() {
+        store.recordClick(browserId: "com.apple.Safari")
+        store.recordClick(browserId: "com.apple.Safari")
+        store.recordClick(browserId: "com.google.Chrome")
+        let stats = store.loadClickStats()
+        XCTAssertEqual(stats["com.apple.Safari"], 2)
+        XCTAssertEqual(stats["com.google.Chrome"], 1)
+    }
+
+    func test_resetClickStats_clearsAll() {
+        store.recordClick(browserId: "com.apple.Safari")
+        store.resetClickStats()
+        let stats = store.loadClickStats()
+        XCTAssertTrue(stats.isEmpty)
+    }
+
+    // MARK: - Rules with isEnabled
+
+    func test_saveAndLoad_preservesIsEnabled() throws {
+        let rules = [
+            BrowserRule(pattern: "*.github.com", browserId: "com.google.Chrome", isEnabled: false),
+            BrowserRule(pattern: "*.example.com", browserId: "com.apple.Safari", isEnabled: true),
+        ]
+        try store.save(rules: rules)
+        let loaded = try store.loadRules()
+        XCTAssertFalse(loaded[0].isEnabled)
+        XCTAssertTrue(loaded[1].isEnabled)
+    }
+
+    // MARK: - Settings Edge Cases
+
+    func test_settings_doNothing_roundTrip() {
+        let settings = AppSettings(defaultBehavior: .doNothing)
+        store.save(settings: settings)
+        let loaded = store.loadSettings()
+        XCTAssertEqual(loaded.defaultBehavior, .doNothing)
+    }
+
+    func test_settings_allFields_roundTrip() {
+        let settings = AppSettings(
+            defaultBehavior: .showPicker,
+            launchAtLogin: true,
+            showQuickAddButton: true,
+            browserOrder: [BrowserOrderItem(browserId: "com.apple.Safari", isVisible: false)],
+            incognitoHoverEnabled: false,
+            incognitoHoverDelay: 2.5,
+            language: "zh-Hans"
+        )
+        store.save(settings: settings)
+        let loaded = store.loadSettings()
+        XCTAssertEqual(loaded.defaultBehavior, .showPicker)
+        XCTAssertTrue(loaded.launchAtLogin)
+        XCTAssertTrue(loaded.showQuickAddButton)
+        XCTAssertEqual(loaded.browserOrder.count, 1)
+        XCTAssertFalse(loaded.browserOrder[0].isVisible)
+        XCTAssertFalse(loaded.incognitoHoverEnabled)
+        XCTAssertEqual(loaded.incognitoHoverDelay, 2.5)
+        XCTAssertEqual(loaded.language, "zh-Hans")
     }
 }

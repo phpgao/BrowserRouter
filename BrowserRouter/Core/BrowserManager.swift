@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Synchronization
 
 /// Detects installed browsers and launches URLs in a specific browser.
 final class BrowserManager {
@@ -38,7 +39,7 @@ final class BrowserManager {
 
     /// Monitors /Applications for changes to auto-refresh browser list.
     private var applicationsMonitor: DispatchSourceFileSystemObject?
-    private var observers: [NSObjectProtocol] = []
+    private nonisolated(unsafe) var observers: [NSObjectProtocol] = []
 
     init() {
         refresh()
@@ -87,7 +88,9 @@ final class BrowserManager {
             source.setEventHandler { [weak self] in
                 // Delay slightly to let the install/uninstall finish
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self?.handleApplicationsChanged()
+                    MainActor.assumeIsolated {
+                        self?.handleApplicationsChanged()
+                    }
                 }
             }
             source.setCancelHandler {
@@ -103,13 +106,17 @@ final class BrowserManager {
             forName: NSWorkspace.didLaunchApplicationNotification,
             object: nil, queue: .main
         ) { [weak self] _ in
-            self?.handleApplicationsChanged()
+            MainActor.assumeIsolated {
+                self?.handleApplicationsChanged()
+            }
         }
         let terminateObs = ws.addObserver(
             forName: NSWorkspace.didTerminateApplicationNotification,
             object: nil, queue: .main
         ) { [weak self] _ in
-            self?.handleApplicationsChanged()
+            MainActor.assumeIsolated {
+                self?.handleApplicationsChanged()
+            }
         }
         observers = [launchObs, terminateObs]
     }
@@ -295,22 +302,22 @@ final class BrowserManager {
             DispatchQueue.main.async { completion(false) }
             return
         }
-        var httpError: Error?
-        var httpsError: Error?
+        let errors = Mutex((http: nil as Error?, https: nil as Error?))
         let group = DispatchGroup()
 
         group.enter()
         NSWorkspace.shared.setDefaultApplication(at: appURL, toOpenURLsWithScheme: "http") { error in
-            httpError = error
+            errors.withLock { $0.http = error }
             group.leave()
         }
         group.enter()
         NSWorkspace.shared.setDefaultApplication(at: appURL, toOpenURLsWithScheme: "https") { error in
-            httpsError = error
+            errors.withLock { $0.https = error }
             group.leave()
         }
         group.notify(queue: .main) {
-            completion(httpError == nil && httpsError == nil)
+            let result = errors.withLock { $0 }
+            completion(result.http == nil && result.https == nil)
         }
     }
 

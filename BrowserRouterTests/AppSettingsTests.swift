@@ -8,6 +8,7 @@
 import XCTest
 @testable import BrowserRouter
 
+@MainActor
 final class AppSettingsTests: XCTestCase {
 
     func test_encode_decode_showPicker() throws {

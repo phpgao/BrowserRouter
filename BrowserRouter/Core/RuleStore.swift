@@ -8,7 +8,7 @@
 import Foundation
 
 /// Persists BrowserRule list (JSON file) and AppSettings (UserDefaults).
-nonisolated final class RuleStore {
+final class RuleStore {
 
     private let rulesFileURL: URL
     private let defaults: UserDefaults
