@@ -33,6 +33,9 @@ final class BrowserManager {
         ("com.kagi.kagimacOS",          "Orion"),
     ]
 
+    /// All known browser bundle IDs for filtering app notifications.
+    static let knownBrowserIds: Set<String> = Set(knownBrowsers.map { $0.id })
+
     /// All installed browsers detected on this machine.
     private(set) var installedBrowsers: [Browser] = []
 
@@ -104,7 +107,11 @@ final class BrowserManager {
         let launchObs = ws.addObserver(
             forName: NSWorkspace.didLaunchApplicationNotification,
             object: nil, queue: .main
-        ) { [weak self] _ in
+        ) { [weak self] notification in
+            // Only react to known browser apps
+            guard let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
+                  let bundleId = app.bundleIdentifier,
+                  Self.knownBrowserIds.contains(bundleId) else { return }
             Task { @MainActor in
                 self?.handleApplicationsChanged()
             }
@@ -112,7 +119,10 @@ final class BrowserManager {
         let terminateObs = ws.addObserver(
             forName: NSWorkspace.didTerminateApplicationNotification,
             object: nil, queue: .main
-        ) { [weak self] _ in
+        ) { [weak self] notification in
+            guard let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
+                  let bundleId = app.bundleIdentifier,
+                  Self.knownBrowserIds.contains(bundleId) else { return }
             Task { @MainActor in
                 self?.handleApplicationsChanged()
             }

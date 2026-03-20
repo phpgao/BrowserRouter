@@ -161,7 +161,7 @@ final class AppStateStore: ObservableObject {
 
     func recordClick(browserId: String) {
         ruleStore.recordClick(browserId: browserId)
-        clickStats = ruleStore.loadClickStats()
+        clickStats[browserId, default: 0] += 1  // update in memory directly
     }
 
     func resetClickStats() {

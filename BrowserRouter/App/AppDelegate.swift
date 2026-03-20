@@ -15,29 +15,29 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     var browserManager: BrowserManager!
     var ruleStore: RuleStore!
     var urlRouter: URLRouter!
-    var settings: AppSettings!
     var pickerWindow: FloatingPickerWindow?
     private var preferencesWindow: NSWindow?
     /// Shared state store — created at launch, reused for Preferences UI.
     private var store: AppStateStore!
+
+    /// Convenience accessor — settings is always sourced from the store after init.
+    private var settings: AppSettings { store.settings }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Boot up core services
         browserManager = BrowserManager()
         ruleStore = RuleStore()
 
-        settings = ruleStore.loadSettings()
+        // Shared state store (loads rules, settings, browsers, clickStats)
+        store = AppStateStore(ruleStore: ruleStore, browserManager: browserManager)
 
         // Apply saved language preference
         if !settings.language.isEmpty {
             UserDefaults.standard.set([settings.language], forKey: "AppleLanguages")
         }
 
-        let rules = (try? ruleStore.loadRules()) ?? []
+        let rules = store.rules
         urlRouter = try? URLRouter(rules: rules)
-
-        // Shared state store
-        store = AppStateStore(ruleStore: ruleStore, browserManager: browserManager)
 
         // Sync launch-at-login state
         syncLaunchAtLogin()
@@ -179,12 +179,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - Settings Reload
 
     @objc private func reloadSettings() {
-        settings = ruleStore.loadSettings()
-        let rules = (try? ruleStore.loadRules()) ?? []
-        try? urlRouter?.update(rules: rules)
+        store.load()  // single source: loads rules, settings, browsers, clickStats
+        try? urlRouter?.update(rules: store.rules)
         syncLaunchAtLogin()
         statusBarController.update(settings: settings)
-        store.load()
     }
 
     @objc private func openPreferencesWindow() {

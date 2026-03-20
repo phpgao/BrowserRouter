@@ -7,10 +7,13 @@
 
 import Foundation
 
+/// Cache for compiled regex patterns used in the static `matches()` method.
+/// NSCache is thread-safe, so this is safe to access from any isolation domain.
+private nonisolated(unsafe) let patternRegexCache = NSCache<NSString, NSRegularExpression>()
+
 /// Matches URLs against ordered wildcard rules.
-/// MainActor-isolated to ensure thread-safe access to compiled rules.
-@MainActor
-final class URLRouter {
+/// Thread-safe via internal locking — safe to use from any thread.
+final class URLRouter: @unchecked Sendable {
 
     private struct CompiledRule {
         let rule: BrowserRule
@@ -19,6 +22,7 @@ final class URLRouter {
     }
 
     private var compiledRules: [CompiledRule] = []
+    private let lock = NSLock()
 
     init(rules: [BrowserRule]) throws {
         compiledRules = try Self.compile(rules)
@@ -26,7 +30,10 @@ final class URLRouter {
 
     /// Updates rules (re-compiles patterns).
     func update(rules: [BrowserRule]) throws {
-        compiledRules = try Self.compile(rules)
+        let newRules = try Self.compile(rules)
+        lock.lock()
+        compiledRules = newRules
+        lock.unlock()
     }
 
     /// Compiles an array of rules into regex-backed CompiledRule values.
@@ -40,11 +47,15 @@ final class URLRouter {
 
     /// Returns the first enabled matching rule, or nil.
     func match(_ url: URL) -> BrowserRule? {
+        lock.lock()
+        let rules = compiledRules
+        lock.unlock()
+
         let normalizedFull = URLRouter.normalize(url, keepQuery: true)
         let normalizedNoQuery = URLRouter.normalize(url, keepQuery: false)
         let hostFull = String(normalizedNoQuery.split(separator: "/", maxSplits: 1).first ?? Substring(normalizedNoQuery))
 
-        for compiled in compiledRules {
+        for compiled in rules {
             guard compiled.rule.isEnabled else { continue }
             let hasQuery = compiled.rule.pattern.contains("?")
             let target: String
@@ -66,8 +77,17 @@ final class URLRouter {
     // MARK: - Static Helpers (nonisolated pure functions)
 
     /// Tests if a single pattern matches a given URL.
+    /// Uses a cache to avoid recompiling the same pattern repeatedly.
     nonisolated static func matches(pattern: String, url: URL) -> Bool {
-        guard let regex = try? compilePattern(pattern) else { return false }
+        let cacheKey = pattern as NSString
+        let regex: NSRegularExpression
+        if let cached = patternRegexCache.object(forKey: cacheKey) {
+            regex = cached
+        } else {
+            guard let compiled = try? compilePattern(pattern) else { return false }
+            patternRegexCache.setObject(compiled, forKey: cacheKey)
+            regex = compiled
+        }
         let hasQuery = pattern.contains("?")
         let isHostOnly = !pattern.contains("/")
         let normalized = normalize(url, keepQuery: hasQuery)

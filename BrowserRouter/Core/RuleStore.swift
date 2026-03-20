@@ -67,13 +67,18 @@ final class RuleStore {
 
     // MARK: - Click Stats
 
+    /// In-memory cache of click stats to avoid repeated decode/encode.
+    private var cachedClickStats: [String: Int]?
+
     /// Returns click counts keyed by browserId.
     func loadClickStats() -> [String: Int] {
+        if let cached = cachedClickStats { return cached }
         guard let data = defaults.data(forKey: statsKey),
               let stats = try? JSONDecoder().decode([String: Int].self, from: data)
         else {
             return [:]
         }
+        cachedClickStats = stats
         return stats
     }
 
@@ -81,6 +86,7 @@ final class RuleStore {
     func recordClick(browserId: String) {
         var stats = loadClickStats()
         stats[browserId, default: 0] += 1
+        cachedClickStats = stats
         if let data = try? JSONEncoder().encode(stats) {
             defaults.set(data, forKey: statsKey)
         }
@@ -88,6 +94,7 @@ final class RuleStore {
 
     /// Resets all click statistics.
     func resetClickStats() {
+        cachedClickStats = nil
         defaults.removeObject(forKey: statsKey)
     }
 }
