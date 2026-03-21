@@ -19,6 +19,6 @@ struct PreferencesView: View {
             RulesListView(store: store)
                 .tabItem { Label("Rules", systemImage: "list.bullet") }
         }
-        .frame(width: UIConstants.preferencesSize.width, height: UIConstants.preferencesSize.height)
+        .frame(minWidth: 480, idealWidth: 520, minHeight: 380, idealHeight: 420)
     }
 }

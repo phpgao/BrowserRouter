@@ -306,7 +306,7 @@ struct RulesListView: View {
                 deleteSelected()
             }
         } message: {
-            Text(String(format: NSLocalizedString("Are you sure you want to delete %lld selected rules? This cannot be undone.", comment: ""), selection.count))
+            Text(String(format: NSLocalizedString("Are you sure you want to delete %lld selected rules?", comment: ""), selection.count))
         }
         .sheet(item: $importFileURL) { item in
             ImportRulesSheet(store: store, fileURL: item.url, onDismiss: { message in
@@ -383,16 +383,15 @@ struct RulesListView: View {
 
     private func deleteRule(_ rule: BrowserRule) {
         if let idx = store.rules.firstIndex(where: { $0.id == rule.id }) {
-            store.rules.remove(at: idx)
-            store.saveRules()
+            store.deleteRule(at: IndexSet(integer: idx))
             if isFiltering { runMatch() }
         }
     }
 
     private func deleteSelected() {
         guard !selection.isEmpty else { return }
-        store.rules.removeAll { selection.contains($0.id) }
-        store.saveRules()
+        let offsets = IndexSet(store.rules.indices.filter { selection.contains(store.rules[$0].id) })
+        store.deleteRule(at: offsets)
         selection.removeAll()
         if isFiltering { runMatch() }
     }

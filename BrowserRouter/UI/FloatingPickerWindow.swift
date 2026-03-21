@@ -103,8 +103,14 @@ final class FloatingPickerWindow {
 
         // Visual effect view for real dock-like frosted glass
         let visualEffect = NSVisualEffectView(frame: NSRect(origin: .zero, size: panelSize))
-        visualEffect.material = .hudWindow
-        visualEffect.state = .active
+        let reduceTransparency = NSWorkspace.shared.accessibilityDisplayShouldReduceTransparency
+        if reduceTransparency {
+            visualEffect.material = .windowBackground
+            visualEffect.state = .inactive
+        } else {
+            visualEffect.material = .hudWindow
+            visualEffect.state = .active
+        }
         visualEffect.blendingMode = .behindWindow
         visualEffect.wantsLayer = true
         visualEffect.layer?.cornerRadius = UIConstants.pickerCornerRadius

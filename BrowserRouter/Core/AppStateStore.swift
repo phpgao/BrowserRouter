@@ -19,6 +19,9 @@ final class AppStateStore: ObservableObject {
     @Published var installedBrowsers: [Browser] = []
     @Published var clickStats: [String: Int] = [:]
 
+    /// UndoManager for rule operations — exposed so views/menus can connect.
+    let undoManager = UndoManager()
+
     /// Browsers sorted and filtered by user preferences.
     /// Hidden browsers are excluded; order follows `settings.browserOrder`.
     var visibleBrowsers: [Browser] {
@@ -98,18 +101,39 @@ final class AppStateStore: ObservableObject {
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty && !existing.contains($0) }
             .map { BrowserRule(pattern: $0, browserId: browserId) }
+        guard !newRules.isEmpty else { return }
+        let oldRules = rules
         rules.append(contentsOf: newRules)
         saveRules()
+        registerUndo(oldRules: oldRules, actionName: NSLocalizedString("Add Rules", comment: "Undo action"))
     }
 
     func deleteRule(at offsets: IndexSet) {
+        let oldRules = rules
         rules.remove(atOffsets: offsets)
         saveRules()
+        registerUndo(oldRules: oldRules, actionName: NSLocalizedString("Delete Rule", comment: "Undo action"))
     }
 
     func moveRule(from source: IndexSet, to destination: Int) {
+        let oldRules = rules
         rules.move(fromOffsets: source, toOffset: destination)
         saveRules()
+        registerUndo(oldRules: oldRules, actionName: NSLocalizedString("Move Rule", comment: "Undo action"))
+    }
+
+    /// Registers an undo action that restores rules to the given snapshot.
+    private func registerUndo(oldRules: [BrowserRule], actionName: String) {
+        let currentRules = rules
+        undoManager.registerUndo(withTarget: self) { store in
+            MainActor.assumeIsolated {
+                let redoSnapshot = store.rules
+                store.rules = oldRules
+                store.saveRules()
+                store.registerUndo(oldRules: redoSnapshot, actionName: actionName)
+            }
+        }
+        undoManager.setActionName(actionName)
     }
 
     // MARK: - Export / Import
@@ -144,6 +168,7 @@ final class AppStateStore: ObservableObject {
         let raw = try JSONDecoder().decode([ExportRule].self, from: data)
         let incoming = raw.map { BrowserRule(pattern: $0.pattern, browserId: $0.browserId, isEnabled: $0.isEnabled) }
 
+        let oldRules = rules
         var importedCount = 0
         var skippedCount = 0
 
@@ -164,6 +189,7 @@ final class AppStateStore: ObservableObject {
         }
 
         saveRules()
+        registerUndo(oldRules: oldRules, actionName: NSLocalizedString("Import Rules", comment: "Undo action"))
         return ImportResult(
             importedCount: importedCount,
             skippedCount: skippedCount

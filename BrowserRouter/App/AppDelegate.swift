@@ -50,6 +50,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // Sync launch-at-login state
         syncLaunchAtLogin()
 
+        // Build main menu bar (LSUIElement apps need this for Edit menu support)
+        setupMainMenu()
+
         // Status bar
         statusBarController = StatusBarController(
             browserManager: browserManager,
@@ -216,17 +219,87 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let stateStore = store!
 
         let prefsView = PreferencesView(store: stateStore)
-        let hostingController = NSHostingController(rootView: prefsView)
+        let hostingController = UndoableHostingController(rootView: prefsView, undoManager: stateStore.undoManager)
 
         let window = NSWindow(contentViewController: hostingController)
         window.title = NSLocalizedString("BrowserRouter Settings", comment: "")
-        window.styleMask = [.titled, .closable, .miniaturizable]
+        window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
         window.setContentSize(UIConstants.preferencesSize)
+        window.minSize = NSSize(width: 480, height: 380)
         window.setFrameAutosaveName("PreferencesWindow")
         window.center()
         window.makeKeyAndOrderFront(nil)
 
         self.preferencesWindow = window
+    }
+
+    // MARK: - Main Menu Bar
+
+    /// Builds the standard NSMenu menu bar for LSUIElement apps.
+    /// Provides Edit menu (Cmd+C/V/X/A/Z) and Window menu for TextFields.
+    private func setupMainMenu() {
+        let mainMenu = NSMenu()
+
+        // App menu
+        let appMenuItem = NSMenuItem()
+        let appMenu = NSMenu()
+        appMenu.addItem(withTitle: NSLocalizedString("About BrowserRouter", comment: ""),
+                        action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)),
+                        keyEquivalent: "")
+        appMenu.addItem(.separator())
+        let settingsItem = NSMenuItem(title: NSLocalizedString("Settings…", comment: ""),
+                                      action: #selector(openPreferencesWindow),
+                                      keyEquivalent: ",")
+        appMenu.addItem(settingsItem)
+        appMenu.addItem(.separator())
+        appMenu.addItem(withTitle: NSLocalizedString("Quit BrowserRouter", comment: ""),
+                        action: #selector(NSApplication.terminate(_:)),
+                        keyEquivalent: "q")
+        appMenuItem.submenu = appMenu
+        mainMenu.addItem(appMenuItem)
+
+        // Edit menu
+        let editMenuItem = NSMenuItem()
+        let editMenu = NSMenu(title: NSLocalizedString("Edit", comment: ""))
+        editMenu.addItem(withTitle: NSLocalizedString("Undo", comment: ""),
+                         action: Selector(("undo:")),
+                         keyEquivalent: "z")
+        let redoItem = NSMenuItem(title: NSLocalizedString("Redo", comment: ""),
+                                  action: Selector(("redo:")),
+                                  keyEquivalent: "z")
+        redoItem.keyEquivalentModifierMask = [.command, .shift]
+        editMenu.addItem(redoItem)
+        editMenu.addItem(.separator())
+        editMenu.addItem(withTitle: NSLocalizedString("Cut", comment: ""),
+                         action: #selector(NSText.cut(_:)),
+                         keyEquivalent: "x")
+        editMenu.addItem(withTitle: NSLocalizedString("Copy", comment: ""),
+                         action: #selector(NSText.copy(_:)),
+                         keyEquivalent: "c")
+        editMenu.addItem(withTitle: NSLocalizedString("Paste", comment: ""),
+                         action: #selector(NSText.paste(_:)),
+                         keyEquivalent: "v")
+        editMenu.addItem(withTitle: NSLocalizedString("Select All", comment: ""),
+                         action: #selector(NSText.selectAll(_:)),
+                         keyEquivalent: "a")
+        editMenuItem.submenu = editMenu
+        mainMenu.addItem(editMenuItem)
+
+        // Window menu
+        let windowMenuItem = NSMenuItem()
+        let windowMenu = NSMenu(title: NSLocalizedString("Window", comment: ""))
+        windowMenu.addItem(withTitle: NSLocalizedString("Minimize", comment: ""),
+                           action: #selector(NSWindow.performMiniaturize(_:)),
+                           keyEquivalent: "m")
+        let closeItem = NSMenuItem(title: NSLocalizedString("Close", comment: ""),
+                                   action: #selector(NSWindow.performClose(_:)),
+                                   keyEquivalent: "w")
+        windowMenu.addItem(closeItem)
+        windowMenuItem.submenu = windowMenu
+        mainMenu.addItem(windowMenuItem)
+
+        NSApp.mainMenu = mainMenu
+        NSApp.windowsMenu = windowMenu
     }
 
     private func syncLaunchAtLogin() {
@@ -245,4 +318,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension Notification.Name {
     static let settingsDidChange = Notification.Name("BrowserRouterSettingsDidChange")
+}
+
+// MARK: - UndoableHostingController
+
+/// NSHostingController subclass that provides a custom UndoManager.
+/// This lets the Edit ▸ Undo/Redo menu items connect to AppStateStore's UndoManager
+/// via the responder chain.
+final class UndoableHostingController<Content: View>: NSHostingController<Content> {
+    private let customUndoManager: UndoManager
+
+    init(rootView: Content, undoManager: UndoManager) {
+        self.customUndoManager = undoManager
+        super.init(rootView: rootView)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) is not supported")
+    }
+
+    override var undoManager: UndoManager? { customUndoManager }
 }

@@ -54,6 +54,7 @@ struct BrowserPickerView: View {
                         onSelect(browser.id, incognito)
                     }
                 )
+                .accessibilitySortPriority(Double(browsers.count - index))
             }
 
             if showQuickAdd {
