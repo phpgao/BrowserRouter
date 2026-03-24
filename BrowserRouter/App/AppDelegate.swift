@@ -53,6 +53,29 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // Build main menu bar (LSUIElement apps need this for Edit menu support)
         setupMainMenu()
 
+        // SwiftUI sheets swallow Edit key equivalents (Cmd+C/V/X/A/Z).
+        // Intercept keyDown and send the action directly to the first responder.
+        // Note: this monitor lives for the entire app lifetime (LSUIElement app).
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+            let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+
+            let action: Selector?
+            switch (event.charactersIgnoringModifiers, flags) {
+            case ("c", .command): action = #selector(NSText.copy(_:))
+            case ("v", .command): action = #selector(NSText.paste(_:))
+            case ("x", .command): action = #selector(NSText.cut(_:))
+            case ("a", .command): action = #selector(NSResponder.selectAll(_:))
+            case ("z", [.command, .shift]): action = Selector(("redo:"))
+            case ("z", .command): action = Selector(("undo:"))
+            default: action = nil
+            }
+
+            if let action, NSApp.sendAction(action, to: nil, from: nil) {
+                return nil
+            }
+            return event
+        }
+
         // Status bar
         statusBarController = StatusBarController(
             browserManager: browserManager,
