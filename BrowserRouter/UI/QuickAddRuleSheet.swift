@@ -26,9 +26,7 @@ struct QuickAddRuleSheet: View {
                 Text("Pattern")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                TextField("Pattern", text: $pattern)
-                    .textFieldStyle(.roundedBorder)
-                    .font(.system(.body, design: .monospaced))
+                NativeTextField(text: $pattern, placeholder: "Pattern")
                     .onChange(of: pattern) { _ in
                         if let error = URLRouter.validate(pattern) {
                             validationError = error
