@@ -19,6 +19,8 @@ enum UIConstants {
     static let browserIconSize: CGFloat = 32
     /// Corner radius for browser icons in the settings list.
     static let browserIconCornerRadius: CGFloat = 7
-    /// Default size of the Preferences window.
+    /// Minimum size of the Preferences window.
+    static let preferencesMinSize = NSSize(width: 480, height: 380)
+    /// Default (ideal) size of the Preferences window.
     static let preferencesSize = NSSize(width: 520, height: 420)
 }

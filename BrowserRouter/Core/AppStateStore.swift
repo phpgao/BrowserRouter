@@ -20,7 +20,11 @@ final class AppStateStore: ObservableObject {
     @Published var clickStats: [String: Int] = [:]
 
     /// UndoManager for rule operations — exposed so views/menus can connect.
-    let undoManager = UndoManager()
+    let undoManager: UndoManager = {
+        let manager = UndoManager()
+        manager.levelsOfUndo = 20
+        return manager
+    }()
 
     /// Browsers sorted and filtered by user preferences.
     /// Hidden browsers are excluded; order follows `settings.browserOrder`.
@@ -122,9 +126,41 @@ final class AppStateStore: ObservableObject {
         registerUndo(oldRules: oldRules, actionName: NSLocalizedString("Move Rule", comment: "Undo action"))
     }
 
+    func toggleRule(at index: Int) {
+        let oldRules = rules
+        rules[index].isEnabled.toggle()
+        saveRules()
+        registerUndo(oldRules: oldRules, actionName: NSLocalizedString("Toggle Rule", comment: "Undo action"))
+    }
+
+    /// Saves the current rules and registers undo with a pre-captured snapshot.
+    /// Use when rules have already been mutated externally (e.g. via SwiftUI Binding).
+    func saveRulesWithUndo(oldRules: [BrowserRule], actionName: String) {
+        saveRules()
+        registerUndo(oldRules: oldRules, actionName: actionName)
+    }
+
+    func setRulesEnabled(_ enabled: Bool, at indices: [Int]) {
+        guard !indices.isEmpty else { return }
+        let oldRules = rules
+        for i in indices {
+            rules[i].isEnabled = enabled
+        }
+        saveRules()
+        registerUndo(oldRules: oldRules, actionName: NSLocalizedString(enabled ? "Enable Rules" : "Disable Rules", comment: "Undo action"))
+    }
+
+    func updateRule(id: UUID, pattern: String, browserId: String) {
+        guard let idx = rules.firstIndex(where: { $0.id == id }) else { return }
+        let oldRules = rules
+        rules[idx].pattern = pattern
+        rules[idx].browserId = browserId
+        saveRules()
+        registerUndo(oldRules: oldRules, actionName: NSLocalizedString("Edit Rule", comment: "Undo action"))
+    }
+
     /// Registers an undo action that restores rules to the given snapshot.
     private func registerUndo(oldRules: [BrowserRule], actionName: String) {
-        let currentRules = rules
         undoManager.registerUndo(withTarget: self) { store in
             MainActor.assumeIsolated {
                 let redoSnapshot = store.rules

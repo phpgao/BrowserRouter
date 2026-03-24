@@ -225,7 +225,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         window.title = NSLocalizedString("BrowserRouter Settings", comment: "")
         window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
         window.setContentSize(UIConstants.preferencesSize)
-        window.minSize = NSSize(width: 480, height: 380)
+        window.minSize = UIConstants.preferencesMinSize
         window.setFrameAutosaveName("PreferencesWindow")
         window.center()
         window.makeKeyAndOrderFront(nil)
@@ -261,6 +261,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // Edit menu
         let editMenuItem = NSMenuItem()
         let editMenu = NSMenu(title: NSLocalizedString("Edit", comment: ""))
+        // Note: undo:/redo: selectors use string construction because AppKit's
+        // UndoManager dispatches these via the responder chain with no public @objc
+        // method available for #selector. The double-parentheses silence the compiler warning.
         editMenu.addItem(withTitle: NSLocalizedString("Undo", comment: ""),
                          action: Selector(("undo:")),
                          keyEquivalent: "z")
