@@ -261,11 +261,7 @@ struct AddRulesSheet: View {
     private func submit() {
         if let rule = editingRule {
             // Edit mode — update existing rule in place
-            if let idx = store.rules.firstIndex(where: { $0.id == rule.id }) {
-                store.rules[idx].pattern = nonEmptyLines.first ?? rule.pattern
-                store.rules[idx].browserId = selectedBrowserId
-                store.saveRules()
-            }
+            store.updateRule(id: rule.id, pattern: nonEmptyLines.first ?? rule.pattern, browserId: selectedBrowserId)
         } else {
             store.addRules(patterns: nonEmptyLines, browserId: selectedBrowserId)
         }

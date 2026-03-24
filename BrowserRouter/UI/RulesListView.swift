@@ -187,7 +187,14 @@ struct RulesListView: View {
                                 browserIcon: browser?.icon,
                                 isHighlighted: matchedRuleIds != nil,
                                 isBrowserInvalid: browser == nil,
-                                onToggle: { store.saveRules() },
+                                onToggle: {
+                                    // Binding already toggled isEnabled; build the pre-toggle snapshot for undo.
+                                    var snapshot = store.rules
+                                    if let ruleIdx = snapshot.firstIndex(where: { $0.id == rule.id }) {
+                                        snapshot[ruleIdx].isEnabled.toggle()
+                                    }
+                                    store.saveRulesWithUndo(oldRules: snapshot, actionName: NSLocalizedString("Toggle Rule", comment: "Undo action"))
+                                },
                                 onEdit: { editingRule = rule },
                                 onDelete: {
                                     deleteRule(rule)
@@ -355,8 +362,7 @@ struct RulesListView: View {
             // Single-rule context menu
             if let idx = store.rules.firstIndex(where: { $0.id == rule.id }) {
                 Button {
-                    store.rules[idx].isEnabled.toggle()
-                    store.saveRules()
+                    store.toggleRule(at: idx)
                 } label: {
                     Text(rule.isEnabled
                          ? NSLocalizedString("Disable", comment: "")
@@ -397,10 +403,8 @@ struct RulesListView: View {
     }
 
     private func setSelectedEnabled(_ enabled: Bool) {
-        for i in store.rules.indices where selection.contains(store.rules[i].id) {
-            store.rules[i].isEnabled = enabled
-        }
-        store.saveRules()
+        let indices = store.rules.indices.filter { selection.contains(store.rules[$0].id) }
+        store.setRulesEnabled(enabled, at: indices)
     }
 
     private func runMatch() {
