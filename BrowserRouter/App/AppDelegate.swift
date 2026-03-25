@@ -128,6 +128,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             showPicker(for: url)
         case .showWarning(let rule):
             showBrowserMissingAlert(for: url, rule: rule)
+        case .showDefaultBrowserWarning:
+            break  // TODO: Task 3 will implement the full handler
+        case .showDefaultBrowserWarning(let browserId):
+            showDefaultBrowserMissingAlert(for: url, browserId: browserId)
         case .doNothing:
             break
         }
@@ -157,6 +161,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let response = alert.runModal()
         if response == .alertFirstButtonReturn {
             showPicker(for: url, updatingRule: rule)
+        }
+    }
+
+    private func showDefaultBrowserMissingAlert(for url: URL, browserId: String) {
+        let alert = NSAlert()
+        alert.messageText = NSLocalizedString("Default Browser Not Found", comment: "")
+        alert.informativeText = String(
+            format: NSLocalizedString(
+                "The default browser (%@) is not installed.\n\nWould you like to choose another browser to open this URL?",
+                comment: ""
+            ),
+            browserId
+        )
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: NSLocalizedString("Choose Browser", comment: ""))
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
+
+        NSApp.activate(ignoringOtherApps: true)
+        let response = alert.runModal()
+        if response == .alertFirstButtonReturn {
+            showPicker(for: url)
         }
     }
 
