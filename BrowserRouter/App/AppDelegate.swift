@@ -114,10 +114,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func route(url: URL) {
         let matched = urlRouter?.match(url)
         let browserInstalled = matched.map { browserManager.browser(forId: $0.browserId) != nil } ?? false
+        let defaultBrowserInstalled: Bool = {
+            if case .openInBrowser(let id) = settings.defaultBehavior {
+                return browserManager.browser(forId: id) != nil
+            }
+            return true  // irrelevant for showPicker / doNothing
+        }()
         let action = RouteResolver.resolve(
             matchedRule: matched,
             browserInstalled: browserInstalled,
             defaultBehavior: settings.defaultBehavior,
+            defaultBrowserInstalled: defaultBrowserInstalled,
             forceShowPicker: NSEvent.modifierFlags.contains(.command)
         )
 
@@ -128,8 +135,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             showPicker(for: url)
         case .showWarning(let rule):
             showBrowserMissingAlert(for: url, rule: rule)
-        case .showDefaultBrowserWarning:
-            break  // TODO: Task 3 will implement the full handler
         case .showDefaultBrowserWarning(let browserId):
             showDefaultBrowserMissingAlert(for: url, browserId: browserId)
         case .doNothing:
@@ -164,12 +169,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    // MARK: - Default Browser Missing Alert
+
     private func showDefaultBrowserMissingAlert(for url: URL, browserId: String) {
         let alert = NSAlert()
         alert.messageText = NSLocalizedString("Default Browser Not Found", comment: "")
         alert.informativeText = String(
             format: NSLocalizedString(
-                "The default browser (%@) is not installed.\n\nWould you like to choose another browser to open this URL?",
+                "The default fallback browser \"%@\" is no longer installed.\n\nWould you like to choose a replacement browser?",
                 comment: ""
             ),
             browserId
@@ -181,8 +188,36 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
         let response = alert.runModal()
         if response == .alertFirstButtonReturn {
-            showPicker(for: url)
+            showDefaultBrowserPicker(for: url)
         }
+    }
+
+    /// Shows the browser picker for the default-browser-missing scenario.
+    /// When the user picks a browser, opens the URL AND updates defaultBehavior setting.
+    private func showDefaultBrowserPicker(for url: URL) {
+        let cursorPosition = NSEvent.mouseLocation
+        let browsers = store.visibleBrowsers
+
+        pickerWindow = FloatingPickerWindow(
+            browsers: browsers,
+            atPosition: cursorPosition,
+            showQuickAdd: false,
+            incognitoHoverEnabled: settings.incognitoHoverEnabled,
+            incognitoHoverDelay: settings.incognitoHoverDelay,
+            onSelect: { [weak self] browserId, isIncognito in
+                guard let self else { return }
+                self.openAndRecord(url: url, browserId: browserId, isIncognito: isIncognito)
+
+                // Update defaultBehavior to use the new browser
+                var updatedSettings = self.settings
+                updatedSettings.defaultBehavior = .openInBrowser(browserId)
+                self.ruleStore.save(settings: updatedSettings)
+                self.reloadSettings()
+            },
+            onQuickAdd: { },
+            onRuleSaved: nil
+        )
+        pickerWindow?.show()
     }
 
     /// Shows the browser picker. If `updatingRule` is provided, the selected browser also updates that rule.

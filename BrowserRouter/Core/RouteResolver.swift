@@ -33,7 +33,7 @@ struct RouteResolver {
         matchedRule: BrowserRule?,
         browserInstalled: Bool,
         defaultBehavior: AppSettings.DefaultBehavior,
-        defaultBrowserInstalled: Bool = true,
+        defaultBrowserInstalled: Bool,
         forceShowPicker: Bool
     ) -> RouteAction {
         // ⌘-click always forces the picker
