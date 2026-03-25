@@ -568,6 +568,28 @@
         }
       }
     },
+    "Choose Browser": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ブラウザを選択"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择浏览器"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選擇瀏覽器"
+          }
+        }
+      }
+    },
     "Clear search": {},
     "Click + Add to create URL routing rules.": {
       "localizations": {
@@ -697,6 +719,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "預設瀏覽器"
+          }
+        }
+      }
+    },
+    "Default Browser Not Found": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デフォルトブラウザが見つかりません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "默认浏览器未找到"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "預設瀏覽器未找到"
           }
         }
       }
@@ -2182,6 +2226,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "瀏覽器 \"%@\" 已不再安裝。請在偏好設定中更新規則。"
+          }
+        }
+      }
+    },
+    "The default fallback browser \"%@\" is no longer installed.\n\nWould you like to choose a replacement browser?": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デフォルトのフォールバックブラウザ「%@」はインストールされていません。\n\n代替ブラウザを選択しますか？"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "默认后备浏览器「%@」已不存在。\n\n是否选择替代浏览器？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "預設後備瀏覽器「%@」已不存在。\n\n是否選擇替代瀏覽器？"
           }
         }
       }
